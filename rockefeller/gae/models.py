@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+from .. import currency
 
 
 class Currency(ndb.Model):
@@ -14,7 +15,9 @@ class Currency(ndb.Model):
 
     @classmethod
     def get(cls, code):
-        return cls.get_key(code).get()
+        obj = cls.get_key(code).get()
+        if obj:
+            return currency.Currency(**obj.to_dict())
 
     @classmethod
     def support(cls, currency):

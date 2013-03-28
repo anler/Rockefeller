@@ -38,7 +38,7 @@ class Money(namedtuple('Money', 'amount currency')):
             amount = parts[0]
         return u'{}{}'.format(self.currency.symbol, amount)
 
-    def exchange_to(self, currency):
+    def exchange_rate_to(self, currency):
         rate = get_exchange_rate(self.currency, currency)
         if rate is None and Money.indirection_currency:
             rate_from_base = get_exchange_rate(self.currency,
@@ -49,7 +49,11 @@ class Money(namedtuple('Money', 'amount currency')):
                 rate = rate_from_base * rate_base_to
 
         if rate:
-            exponent = '1.' + '0' * currency.exponent
-            amount = (self.amount * rate).quantize(
-                decimal.Decimal(exponent), rounding=decimal.ROUND_HALF_UP)
+            return rate
+
+    def exchange_to(self, currency):
+        rate = self.exchange_rate_to(currency)
+
+        if rate:
+            amount = round_amount(self.amount * rate, currency)
             return self.__class__(amount=amount, currency=currency)

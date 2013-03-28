@@ -6,7 +6,7 @@ class ExchangeRates(object):
         self.store = store
 
     def add_exchange_rate(self, base_currency, currency, exchange_rate):
-        self.store.add_exchange_rate(base_currency, currency, exchange_rate)
+        self.store.add_exchange_rate(base_currency, currency, str(exchange_rate))
 
     def get_exchange_rate(self, base_currency, currency):
         """Get exchange rate of a currency relatively to another one.

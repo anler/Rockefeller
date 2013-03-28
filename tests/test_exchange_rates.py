@@ -20,7 +20,7 @@ class TestExchangeRates:
         er.add_exchange_rate(base_currency=usd, currency=eur,
                              exchange_rate=1.0)
 
-        er.store.add_exchange_rate.assert_called_once_with(usd, eur, 1.0)
+        er.store.add_exchange_rate.assert_called_once_with(usd, eur, '1.0')
 
     def test_get_exchange_rate(self):
         er = rockefeller.ExchangeRates(store=mock.Mock())

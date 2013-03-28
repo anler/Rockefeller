@@ -6,7 +6,7 @@ from .money import Money
 
 
 def set_currency_store(store):
-    pass
+    Currency.store = store
 
 
 def set_exchange_rates_store(store):
