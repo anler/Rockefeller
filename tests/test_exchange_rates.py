@@ -2,6 +2,7 @@
 import mock
 
 import rockefeller
+import rockefeller.gae.exchange_rates
 
 
 def setup_module(module):
@@ -52,3 +53,17 @@ class TestMemoryExchangeRates:
 
         assert st.get_exchange_rate(
             rockefeller.Currency.USD, rockefeller.Currency.EUR) is None
+
+
+class TestGAEExchangeRates:
+    def test_add_exchange_rate(self):
+        st = rockefeller.gae.exchange_rates.GAEExchangeRates(mock.Mock())
+        st.add_exchange_rate(usd, eur, 1.0)
+
+        st.model.add_exchange_rate.assert_called_once_with(usd, eur, 1.0)
+
+    def test_get_exchange_rate(self):
+        st = rockefeller.gae.exchange_rates.GAEExchangeRates(mock.Mock())
+        st.get_exchange_rate(usd, eur)
+
+        st.model.get_exchange_rate.assert_called_once_with(usd, eur)

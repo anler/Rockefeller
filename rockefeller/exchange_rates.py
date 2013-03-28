@@ -1,3 +1,4 @@
+import decimal
 
 
 class ExchangeRates(object):
@@ -19,13 +20,16 @@ class ExchangeRates(object):
         :param currency: Currency you want to know its exchange rate in relation
             to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
 
-        :return: Exchange rate as a ``float.``
+        :return: Exchange rate as a ``decimal.``
         """
         rate = self.store.get_exchange_rate(base_currency, currency)
         if rate is None:
             inverse = self.store.get_exchange_rate(currency, base_currency)
             if inverse:
-                rate = 1.0 / inverse
+                rate = decimal.Decimal(1) / decimal.Decimal(inverse)
+        else:
+            rate = decimal.Decimal(str(rate))
+
         return rate
 
 
@@ -39,7 +43,6 @@ class MemoryExchangeRates(object):
         return hash(base_currency), hash(currency)
 
     def add_exchange_rate(self, base_currency, currency, exchange_rate):
-        print base_currency, currency, exchange_rate
         self.rates[self._get_key(base_currency, currency)] = exchange_rate
 
     def get_exchange_rate(self, base_currency, currency):

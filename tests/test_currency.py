@@ -2,6 +2,7 @@ import pytest
 import mock
 
 import rockefeller
+import rockefeller.gae.currency
 
 
 def setup_module(module):
@@ -62,3 +63,17 @@ class TestMemoryCurrency:
         st = rockefeller.MemoryCurrency()
 
         assert st.get('USD') is None
+
+
+class TestGAECurrency:
+    def test_support(self):
+        st = rockefeller.gae.currency.GAECurrency(mock.Mock())
+        st.support(usd)
+
+        st.model.support.assert_called_once_with(usd)
+
+    def test_get(self):
+        st = rockefeller.gae.currency.GAECurrency(mock.Mock())
+        st.get('USD')
+
+        st.model.get.assert_called_once_with('USD')
