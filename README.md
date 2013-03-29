@@ -96,7 +96,7 @@ class.
 money = rockefeller.Money(amount=100.235, currency=rockefeller.Currency.USD)
 ```
 
-#### Arithmetic
+#### Money arithmetic
 
 #### Sum
 
