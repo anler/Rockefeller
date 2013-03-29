@@ -1,4 +1,8 @@
 # coding: utf-8
+import decimal
+
+import pytest
+
 import rockefeller
 
 
@@ -30,7 +34,10 @@ class TestMoney:
         clp = rockefeller.Money(amount=60551.984324,
                                 currency=rockefeller.Currency.CLP)
 
+        assert decimal.Decimal('100.235') == usd.amount
         assert 100.24 == float(usd)
+
+        assert decimal.Decimal('60551.984324') == clp.amount
         assert 60552 == float(clp)
 
     def test_representation(self):
@@ -71,3 +78,58 @@ class TestMoney:
         usd2 = rockefeller.Money(amount=78, currency=rockefeller.Currency.USD)
 
         assert usd1 != usd2
+
+    def test_addition(self):
+        usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        assert rockefeller.Money(200, rockefeller.Currency.USD) == usd1 + usd2
+
+    def test_unsupported_addition(self):
+        usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        with pytest.raises(TypeError):
+            usd1 + 100
+
+    def test_substraction(self):
+        usd1 = rockefeller.Money(amount=90, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        assert rockefeller.Money(-10, rockefeller.Currency.USD) == usd1 - usd2
+
+    def test_unsupported_substraction(self):
+        usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        with pytest.raises(TypeError):
+            usd1 - 100
+
+    def test_substraction_saturating(self):
+        usd1 = rockefeller.Money(amount=90, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        assert rockefeller.Money(0, rockefeller.Currency.USD) == usd1.remove(usd2)
+        assert rockefeller.Money(10, rockefeller.Currency.USD) == usd2.remove(usd1)
+
+    def test_multiplication(self):
+        usd1 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+
+        assert rockefeller.Money(100, rockefeller.Currency.USD) == usd1 * usd2
+
+    def test_unsupported_multiplication(self):
+        usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        with pytest.raises(TypeError):
+            usd1 * 100
+
+    def test_division(self):
+        usd1 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+
+        assert rockefeller.Money(1, rockefeller.Currency.USD) == usd1 / usd2
+
+    def test_unsupported_division(self):
+        usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
+
+        with pytest.raises(TypeError):
+            usd1 / 100
