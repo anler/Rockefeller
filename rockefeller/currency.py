@@ -47,6 +47,7 @@ class Currency(namedtuple('Currency', 'name code numeric exponent symbol')):
             empty string ``''``.
     """
     __metaclass__ = CurrencyType
+    __slots__ = ()
     store = MemoryCurrency()
 
     def __str__(self):

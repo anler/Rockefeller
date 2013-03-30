@@ -34,7 +34,6 @@ class ExchangeRates(object):
 
 
 class MemoryExchangeRates(object):
-    __slots__ = 'rates'
 
     def __init__(self):
         self.rates = {}

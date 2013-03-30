@@ -14,6 +14,7 @@ class Money(namedtuple('Money', 'amount currency')):
     """Representation of money. Each object has an amount and a currency.
     Amount is always converted into a ``decimal``.
     """
+    __slots__ = ()
     indirection_currency = None
 
     def __new__(cls, amount, currency):
