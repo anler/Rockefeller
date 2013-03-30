@@ -33,6 +33,8 @@
 tools for <strong>storing</strong> currencies and exchange rates, <strong>converting</strong> from one
 currency to another and <strong>fetching</strong> exchange rates from different services.</p>
 
+<p><img src="http://floqq.github.com/Rockefeller/" alt="http://floqq.github.com/Rockefeller/"></p>
+
 <h2>Tutorial</h2>
 
 <h3>Working with currencies</h3>
@@ -200,6 +202,83 @@ class.</p>
 </pre></div>
 
 <h4>Conversion between currencies using indirection</h4>
+
+<p>Is common that third-party exchange-rate services gives you the rates of each
+currency relative to a common one.
+Take for example, <a href="https://openexchangerates.org">openexchangerates.org</a> that
+returns all rates relative to <strong>USD Dollars</strong>.</p>
+
+<div class="highlight"><pre><span class="cm">/* latest.json (7 mins ago) */</span>
+<span class="p">{</span>
+    <span class="s2">"timestamp"</span><span class="o">:</span> <span class="mi">1364680868</span><span class="p">,</span>
+    <span class="s2">"base"</span><span class="o">:</span> <span class="s2">"USD"</span><span class="p">,</span>
+    <span class="s2">"rates"</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">"AED"</span><span class="o">:</span> <span class="mf">3.6729</span><span class="p">,</span>
+        <span class="s2">"AFN"</span><span class="o">:</span> <span class="mf">53.0133</span><span class="p">,</span>
+        <span class="s2">"ALL"</span><span class="o">:</span> <span class="mf">109.122501</span><span class="p">,</span>
+        <span class="s2">"AMD"</span><span class="o">:</span> <span class="mf">421.240004</span><span class="p">,</span>
+        <span class="cm">/* 164 currencies */</span>
+        <span class="s2">"YER"</span><span class="o">:</span> <span class="mf">214.800258</span><span class="p">,</span>
+        <span class="s2">"ZAR"</span><span class="o">:</span> <span class="mf">9.233264</span><span class="p">,</span>
+        <span class="s2">"ZMK"</span><span class="o">:</span> <span class="mf">5227.108333</span><span class="p">,</span>
+        <span class="s2">"ZMW"</span><span class="o">:</span> <span class="mf">5.3855</span><span class="p">,</span>
+        <span class="s2">"ZWL"</span><span class="o">:</span> <span class="mf">322.322775</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Thi is how Rockefeller library works when you try to convert <strong>currency 1</strong> to
+<strong>currency 2</strong>:</p>
+
+<ol>
+<li>get_exchange_rate(currency1, currency2)</li>
+<li>if not found try the inverse: get_exchange_rate(currency2, currency1)</li>
+<li>if not found, try using the <strong>indirection currency</strong>
+</li>
+</ol><p>The <strong>indirection currency</strong> is a currency you set as the common/base currency
+to which the rest of the currency rates are related.</p>
+
+<p>So, let's say we have the following:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">add_exchange_rate</span><span class="p">(</span><span class="n">usd</span><span class="p">,</span> <span class="n">eur</span><span class="p">,</span> <span class="o">.</span><span class="mi">78</span><span class="p">)</span>
+<span class="n">rockefeller</span><span class="o">.</span><span class="n">add_exchange_rate</span><span class="p">(</span><span class="n">usd</span><span class="p">,</span> <span class="n">clp</span><span class="p">,</span> <span class="mf">472.03735</span><span class="p">)</span>
+</pre></div>
+
+<p>And you want to get the exchange rate from <strong>eur</strong> to <strong>clp</strong>:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
+<span class="c"># =&gt; None</span>
+</pre></div>
+
+<p>It will be <code>None</code> since there's no direct relation between <strong>eur -&gt; clp</strong> or
+<strong>clp -&gt; eur</strong>. Of course, this behavior is not desired because storing all the
+rates between currencies will require 33,856 associations (taking into account
+that there's 184 different currencies).</p>
+
+<p>The workaround to this problem is setting the <strong>indirection currency</strong> like
+this:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="o">.</span><span class="n">indirection_currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span>
+</pre></div>
+
+<p>With that in place, any time an exchange rate can't be found, the indirection
+currency will be checked, and if set, then this:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
+<span class="c"># =&gt; None</span>
+</pre></div>
+
+<p>will be treated internally as this:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">usd</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
+<span class="c"># =&gt; Decimal('24177.16', rockefeller.Currency.CLP)</span>
+</pre></div>
+
+<p><strong>NOTICE</strong>
+Take into account that the <strong>indirection currency</strong> is just a workaround used
+by the <code>Money</code> class to convert money from one currency into another, if you
+try to get the exchange rate between two unrelated currencies using
+<code>get\_exchange\_rate()</code> you will keep getting <code>None</code>.</p>
 
 <h2>Installation</h2>
 
