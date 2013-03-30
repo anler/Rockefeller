@@ -217,7 +217,7 @@ returns all rates relative to __USD Dollars__.
 }
 ```
 
-Thi is how Rockefeller library works when you try to convert __currency 1__ to
+This is how the ``Money`` class works when you try to convert __currency 1__ into
 __currency 2__:
 
 1. get_exchange_rate(currency1, currency2)
@@ -272,7 +272,7 @@ rockefeller.Money(40, eur).exchange_to(usd).exchange_to(clp)
 Take into account that the __indirection currency__ is just a workaround used
 by the ``Money`` class to convert money from one currency into another, if you
 try to get the exchange rate between two unrelated currencies using
-``get\_exchange\_rate()`` you will keep getting ``None``.
+``get_exchange_rate()`` you will still get ``None``.
 
 
 Installation
