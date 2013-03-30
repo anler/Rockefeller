@@ -54,6 +54,13 @@ class TestMoney:
         exchange = usd.exchange_to(rockefeller.Currency.EUR)
         assert exchange == eur
 
+    def test_exchange_to_not_set(self):
+        rockefeller.Money.indirection_currency = None
+        usd = rockefeller.Money(amount=100, currency=rockefeller.Currency.EUR)
+
+        exchange = usd.exchange_to(rockefeller.Currency.CLP)
+        assert exchange is None
+
     def test_exchange_indirectional(self):
         rockefeller.Money.indirection_currency = rockefeller.Currency.USD
         eur = rockefeller.Money(amount=100, currency=rockefeller.Currency.EUR)
