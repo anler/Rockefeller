@@ -192,6 +192,87 @@ eur.exchange_to(rockefeller.Currency.USD)
 
 #### Conversion between currencies using indirection
 
+Is common that third-party exchange-rate services gives you the rates of each
+currency relative to a common one.
+Take for example, [openexchangerates.org](https://openexchangerates.org) that
+returns all rates relative to __USD Dollars__.
+
+``` javascript
+/* latest.json (7 mins ago) */
+{
+    "timestamp": 1364680868,
+    "base": "USD",
+    "rates": {
+        "AED": 3.6729,
+        "AFN": 53.0133,
+        "ALL": 109.122501,
+        "AMD": 421.240004,
+        /* 164 currencies */
+        "YER": 214.800258,
+        "ZAR": 9.233264,
+        "ZMK": 5227.108333,
+        "ZMW": 5.3855,
+        "ZWL": 322.322775
+    }
+}
+```
+
+Thi is how Rockefeller library works when you try to convert __currency 1__ to
+__currency 2__:
+
+1. get_exchange_rate(currency1, currency2)
+2. if not found try the inverse: get_exchange_rate(currency2, currency1)
+3. if not found, try using the __indirection currency__
+
+The __indirection currency__ is a currency you set as the common/base currency
+to which the rest of the currency rates are related.
+
+So, let's say we have the following:
+
+``` python
+rockefeller.add_exchange_rate(usd, eur, .78)
+rockefeller.add_exchange_rate(usd, clp, 472.03735)
+```
+
+And you want to get the exchange rate from __eur__ to __clp__:
+
+``` python
+rockefeller.Money(40, eur).exchange_to(clp)
+# => None
+```
+
+It will be ``None`` since there's no direct relation between __eur -> clp__ or
+__clp -> eur__. Of course, this behavior is not desired because storing all the
+rates between currencies will require 33,856 associations (taking into account
+that there's 184 different currencies).
+
+The workaround to this problem is setting the __indirection currency__ like
+this:
+
+``` python
+rockefeller.Money.indirection_currency = rockefeller.Currency.USD
+```
+
+With that in place, any time an exchange rate can't be found, the indirection
+currency will be checked, and if set, then this:
+
+``` python
+rockefeller.Money(40, eur).exchange_to(clp)
+# => None
+```
+
+will be treated internally as this:
+
+``` python
+rockefeller.Money(40, eur).exchange_to(usd).exchange_to(clp)
+# => Decimal('24177.16', rockefeller.Currency.CLP)
+```
+
+**NOTICE**
+Take into account that the __indirection currency__ is just a workaround used
+by the ``Money`` class to convert money from one currency into another, if you
+try to get the exchange rate between two unrelated currencies using
+``get\_exchange\_rate()`` you will keep getting ``None``.
 
 
 Installation
