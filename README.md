@@ -5,6 +5,8 @@ Library for dealing with money and currency conversion in Python. It provides
 tools for __storing__ currencies and exchange rates, __converting__ from one
 currency to another and __fetching__ exchange rates from different services.
 
+![http://floqq.github.com/Rockefeller/](http://floqq.github.com/Rockefeller/)
+
 Tutorial
 --------
 
