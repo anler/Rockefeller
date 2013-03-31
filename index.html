@@ -35,9 +35,7 @@ currency to another and <strong>fetching</strong> exchange rates from different 
 
 <p><img src="http://floqq.github.com/Rockefeller/" alt="http://floqq.github.com/Rockefeller/"></p>
 
-<h2>Tutorial</h2>
-
-<h3>Working with currencies</h3>
+<h2>Working with currencies</h2>
 
 <p>Currencies are represented by the <code>Currency</code> class.</p>
 
@@ -77,7 +75,15 @@ currency to another and <strong>fetching</strong> exchange rates from different 
 <span class="c"># =&gt; False</span>
 </pre></div>
 
-<h3>Exchange rates</h3>
+<p><strong>Note</strong> that there's no currency preloaded or stored by default, is up to you
+to <strong>store</strong> the currencies your application is going to support before working
+with them.</p>
+
+<p>The default <code>store</code> used by the <code>Currency</code> class is <code>MemoryCurrency</code>
+which stores the supported currency just in memory. If you need to store them
+in other place see the section <strong>Currency Store</strong>.</p>
+
+<h2>Exchange rates</h2>
 
 <p>Exchange rates between currencies are represented through the <code>ExchangeRate</code>
 class but you can <strong>add</strong> and <strong>retrieve</strong> exchange rates directly like this:</p>
@@ -109,7 +115,7 @@ class but you can <strong>add</strong> and <strong>retrieve</strong> exchange ra
 <span class="c"># =&gt; True</span>
 </pre></div>
 
-<h3>Money</h3>
+<h2>Money</h2>
 
 <p>For working with currencies and amounts of it there's the convenient <code>Money</code>
 class.</p>
@@ -118,44 +124,44 @@ class.</p>
 <span class="n">money</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">100.235</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
 </pre></div>
 
-<h4>Money arithmetic</h4>
+<h2>Money arithmetic</h2>
 
-<h4>Sum</h4>
+<h3>Sum</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">+</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(200, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h4>Subtraction</h4>
+<h3>Subtraction</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">-</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(-20, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h4>Subtraction (saturating)</h4>
+<h3>Subtraction (saturating)</h3>
 
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span>
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(0, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h4>Multiplication</h4>
+<h3>Multiplication</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">*</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(100, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h4>Division</h4>
+<h3>Division</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">/</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(1, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h4>Float rounding using currency's exponent</h4>
+<h3>Float rounding using currency's exponent</h3>
 
 <div class="highlight"><pre><span class="n">usd_money</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">100.235</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
 <span class="n">clp_money</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">60551.984324</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">CLP</span><span class="p">)</span>
@@ -173,19 +179,19 @@ class.</p>
 <span class="c"># = &gt; 60552</span>
 </pre></div>
 
-<h4>String representation</h4>
+<h3>String representation</h3>
 
 <div class="highlight"><pre><span class="s">u'$100.24'</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">usd_money</span><span class="p">)</span>
 <span class="c"># =&gt; True</span>
 </pre></div>
 
-<h4>Equality</h4>
+<h3>Equality</h3>
 
 <div class="highlight"><pre><span class="n">usd_money</span> <span class="o">==</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">100.235</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
 <span class="c"># =&gt; True</span>
 </pre></div>
 
-<h4>Conversion between currencies</h4>
+<h3>Conversion between currencies</h3>
 
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">rockefeller</span>
 
@@ -201,7 +207,7 @@ class.</p>
 <span class="c"># =&gt; Money(100, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h4>Conversion between currencies using indirection</h4>
+<h3>Conversion between currencies using indirection</h3>
 
 <p>Is common that third-party exchange-rate services gives you the rates of each
 currency relative to a common one.
