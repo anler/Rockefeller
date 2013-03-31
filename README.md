@@ -95,6 +95,9 @@ float(rate) == 604.10
 # => True
 ```
 
+**Note** The default ``store`` used by the ``ExchangeRate`` class is
+``MemoryExchangeRates`` which stores the rates just in memory. If you need to
+store them in other place see the section **Exchange Rates Store**.
 
 Money
 -----
@@ -284,6 +287,47 @@ by the ``Money`` class to convert money from one currency into another, if you
 try to get the exchange rate between two unrelated currencies using
 ``get_exchange_rate()`` you will still get ``None``.
 
+Currency Store
+--------------
+
+By default all supported currencies are stored in memory, so if your program
+finishes or you need the information of those currencies in another place not
+necessarily written in Python then you need a custom solution. But don't panic!
+you can instruct rockefeller to use the class you want to store the currencies,
+in order to do so you just need to create a class that implements the following
+interface:
+
+``` python
+class MyCurrencyStore:
+    def support(self, currency):
+        """Store a currency.
+
+        :param currency: :class:`rockefeller.currency.Currency` instance.
+        """
+        # you must implement this...
+
+    def get(self, code):
+        """Get a currency by its code.
+
+        :param code: ISO 4217 currency code.
+
+        :return: :class:`rockefeller.currency.Currency` instance.
+        """
+        # you must implement this...
+```
+
+With that in place, you just have to tell rockefeller to start using that store
+like this:
+
+``` python
+rockefeller.set_currency_store(MyCurrencyStore())
+```
+
+Exchange Rates Store
+--------------------
+
+Exchange Rates Services
+-----------------------
 
 Installation
 ------------
