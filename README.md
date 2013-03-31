@@ -7,10 +7,9 @@ currency to another and __fetching__ exchange rates from different services.
 
 ![http://floqq.github.com/Rockefeller/](http://floqq.github.com/Rockefeller/)
 
-Tutorial
---------
 
-### Working with currencies
+Working with currencies
+-----------------------
 
 Currencies are represented by the ``Currency`` class.
 
@@ -53,8 +52,17 @@ usd is rockefeller.Currency.USD
 # => False
 ```
 
+**Note** that there's no currency preloaded or stored by default, is up to you
+to __store__ the currencies your application is going to support before working
+with them.
 
-### Exchange rates
+The default ``store`` used by the ``Currency`` class is ``MemoryCurrency``
+which stores the supported currency just in memory. If you need to store them
+in other place see the section **Currency Store**.
+
+
+Exchange rates
+--------------
 
 Exchange rates between currencies are represented through the ``ExchangeRate``
 class but you can __add__ and __retrieve__ exchange rates directly like this:
@@ -88,7 +96,8 @@ float(rate) == 604.10
 ```
 
 
-### Money
+Money
+-----
 
 For working with currencies and amounts of it there's the convenient ``Money``
 class.
@@ -98,9 +107,10 @@ class.
 money = rockefeller.Money(amount=100.235, currency=rockefeller.Currency.USD)
 ```
 
-#### Money arithmetic
+Money arithmetic
+----------------
 
-#### Sum
+### Sum
 
 ``` python
 (rockefeller.Money(100, rockefeller.Currency.USD) + 
@@ -108,7 +118,7 @@ money = rockefeller.Money(amount=100.235, currency=rockefeller.Currency.USD)
 # => Money(200, rockefeller.Currency.USD)
 ```
 
-#### Subtraction
+### Subtraction
 
 ``` python
 (rockefeller.Money(80, rockefeller.Currency.USD) - 
@@ -116,7 +126,7 @@ money = rockefeller.Money(amount=100.235, currency=rockefeller.Currency.USD)
 # => Money(-20, rockefeller.Currency.USD)
 ```
 
-#### Subtraction (saturating)
+### Subtraction (saturating)
 
 ``` python
 rockefeller.Money(80, rockefeller.Currency.USD).remove(
@@ -124,7 +134,7 @@ rockefeller.Money(80, rockefeller.Currency.USD).remove(
 # => Money(0, rockefeller.Currency.USD)
 ```
 
-#### Multiplication
+### Multiplication
 
 ``` python
 (rockefeller.Money(10, rockefeller.Currency.USD) * 
@@ -132,7 +142,7 @@ rockefeller.Money(80, rockefeller.Currency.USD).remove(
 # => Money(100, rockefeller.Currency.USD)
 ```
 
-#### Division
+### Division
 
 ``` python
 (rockefeller.Money(100, rockefeller.Currency.USD) / 
@@ -140,7 +150,7 @@ rockefeller.Money(80, rockefeller.Currency.USD).remove(
 # => Money(1, rockefeller.Currency.USD)
 ```
 
-#### Float rounding using currency's exponent
+### Float rounding using currency's exponent
 
 ``` python
 usd_money = rockefeller.Money(amount=100.235, currency=rockefeller.Currency.USD)
@@ -159,21 +169,21 @@ float(clp_money)
 # = > 60552
 ```
 
-#### String representation
+### String representation
 
 ``` python
 u'$100.24' == unicode(usd_money)
 # => True
 ```
 
-#### Equality
+### Equality
 
 ``` python
 usd_money == rockefeller.Money(amount=100.235, currency=rockefeller.Currency.USD)
 # => True
 ```
 
-#### Conversion between currencies
+### Conversion between currencies
 
 ``` python
 import rockefeller
@@ -190,7 +200,7 @@ eur.exchange_to(rockefeller.Currency.USD)
 # => Money(100, rockefeller.Currency.USD)
 ```
 
-#### Conversion between currencies using indirection
+### Conversion between currencies using indirection
 
 Is common that third-party exchange-rate services gives you the rates of each
 currency relative to a common one.
