@@ -115,6 +115,10 @@ class but you can <strong>add</strong> and <strong>retrieve</strong> exchange ra
 <span class="c"># =&gt; True</span>
 </pre></div>
 
+<p><strong>Note</strong> The default <code>store</code> used by the <code>ExchangeRate</code> class is
+<code>MemoryExchangeRates</code> which stores the rates just in memory. If you need to
+store them in other place see the section <strong>Exchange Rates Store</strong>.</p>
+
 <h2>Money</h2>
 
 <p>For working with currencies and amounts of it there's the convenient <code>Money</code>
@@ -285,6 +289,43 @@ Take into account that the <strong>indirection currency</strong> is just a worka
 by the <code>Money</code> class to convert money from one currency into another, if you
 try to get the exchange rate between two unrelated currencies using
 <code>get_exchange_rate()</code> you will still get <code>None</code>.</p>
+
+<h2>Currency Store</h2>
+
+<p>By default all supported currencies are stored in memory, so if your program
+finishes or you need the information of those currencies in another place not
+necessarily written in Python then you need a custom solution. But don't panic!
+you can instruct rockefeller to use the class you want to store the currencies,
+in order to do so you just need to create a class that implements the following
+interface:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyCurrencyStore</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">support</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">currency</span><span class="p">):</span>
+        <span class="sd">"""Store a currency.</span>
+
+<span class="sd">        :param currency: :class:`rockefeller.currency.Currency` instance.</span>
+<span class="sd">        """</span>
+        <span class="c"># you must implement this...</span>
+
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+        <span class="sd">"""Get a currency by its code.</span>
+
+<span class="sd">        :param code: ISO 4217 currency code.</span>
+
+<span class="sd">        :return: :class:`rockefeller.currency.Currency` instance.</span>
+<span class="sd">        """</span>
+        <span class="c"># you must implement this...</span>
+</pre></div>
+
+<p>With that in place, you just have to tell rockefeller to start using that store
+like this:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">set_currency_store</span><span class="p">(</span><span class="n">MyCurrencyStore</span><span class="p">())</span>
+</pre></div>
+
+<h2>Exchange Rates Store</h2>
+
+<h2>Exchange Rates Services</h2>
 
 <h2>Installation</h2>
 
