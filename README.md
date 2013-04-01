@@ -326,8 +326,104 @@ rockefeller.set_currency_store(MyCurrencyStore())
 Exchange Rates Store
 --------------------
 
-Exchange Rates Services
------------------------
+By default every exchange rate you add between currencies is stored in memory,
+so if your program stops or you need the information of those rates in another
+place not necessarily written in Python then you need a custom solution.
+The way you instruct rockefeller to use the class you want to store the
+exchange rates is by creating a class that implements the following interface:
+
+``` python
+class MyExchangeRateStore:
+    def add_exchange_rate(self, base_currency, currency, exchange_rate):
+        """Store exchange rate of a one currency relatively to another one.
+
+        If rate for ``currency`` relatively to ``base_currency`` can't be
+        found the rate for ``base_currency`` relatively to ``currency`` will
+        be searched and if it's found rate is going to be its inverse.
+
+        :param base_currency: Currency used as the base.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in relation
+            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+        :param exchange_rate: Exchange rate as a string. :class:`str` instance.
+        """
+        # you must implement this...
+
+    def get_exchange_rate(self, base_currency, currency):
+        """Get exchange rate of a currency relatively to another one.
+
+        :param base_currency: Currency used as the base.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in relation
+            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+
+        :return: Exchange rate as a string. :class:`str` instance.
+        """
+        # you must implement this...
+```
+
+With that in place, you just have to tell rockefeller to start using that store
+like this:
+
+``` python
+rockefeller.set_exchange_rates_store(MyExchangeRateStore())
+```
+
+Contrib Stores
+--------------
+
+Since this library came out from a Google App Engine(GAE) project we shipped a
+``Currency`` and ``ExchangeRates`` stores. Each of these stores are going to
+save the data in the datastore using the ``ndb`` models
+``rockefeller.gae.models.Currency`` and ``rockefeller.gae.models.ExchangeRate``.
+
+Use this to plug the GAE currencies store:
+
+``` python
+rockefeller.set_currency_store(
+            rockefeller.gae.currency.GAECurrency(model=rockefeller.gae.models.Currency))
+```
+
+You can tell that you can even use your own GAE model, just make sure that it
+has the ``get(code)`` and ``support(currency)`` class methods.
+
+Use this to plug the GAE exchange rates store:
+
+``` python
+rockefeller.set_exchange_rates_store(
+            rockefeller.gae.exchange_rates.GAEExchangeRates(model=rockefeller.gae.models.ExchangeRate))
+```
+
+You can tell that you can even use your own GAE model, just make sure that it
+has the ``add_exchange_rate(base_currency, currency, exchange_rate)`` and
+``get_exchange_rate(base_currency, currency)`` class methods.
+
+Real World Example
+------------------
+
+This is real-world example of how we use this library. In our project, we have
+a ``money.py`` file that takes care of configuring the lib and initializing the
+supported currencies.
+
+``` python
+from django.conf import settings
+
+import rockefeller
+import rockefeller.gae.models
+import rockefeller.gae.currency
+import rockefeller.gae.exchange_rates
+
+rockefeller.set_currency_store(
+        rockefeller.gae.currency.GAECurrency(rockefeller.gae.models.Currency))
+
+rockefeller.set_exchange_rates_store(
+        rockefeller.gae.exchange_rates.GAEExchangeRates(rockefeller.gae.models.ExchangeRate))
+
+for code, currency in settings.SUPPORTED_CURRENCIES.iteritems():
+    rockefeller.Currency(**currency).support()
+
+rockefeller.Money.indirection_currency = rockefeller.Currency.USD
+```
 
 Installation
 ------------
