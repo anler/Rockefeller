@@ -42,9 +42,30 @@ class MemoryExchangeRates(object):
         return hash(base_currency), hash(currency)
 
     def add_exchange_rate(self, base_currency, currency, exchange_rate):
+        """Store exchange rate of a one currency relatively to another one.
+
+        If rate for ``currency`` relatively to ``base_currency`` can't be
+        found the rate for ``base_currency`` relatively to ``currency`` will
+        be searched and if it's found rate is going to be its inverse.
+
+        :param base_currency: Currency used as the base.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in relation
+            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+        :param exchange_rate: Exchange rate as a string. :class:`str` instance.
+        """
         self.rates[self._get_key(base_currency, currency)] = exchange_rate
 
     def get_exchange_rate(self, base_currency, currency):
+        """Get exchange rate of a currency relatively to another one.
+
+        :param base_currency: Currency used as the base.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in relation
+            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+
+        :return: Exchange rate as a string. :class:`str` instance.
+        """
         return self.rates.get(self._get_key(base_currency, currency))
 
 exchange_rates = ExchangeRates(store=MemoryExchangeRates())

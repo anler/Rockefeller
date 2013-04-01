@@ -8,9 +8,19 @@ class MemoryCurrency(object):
         self.currencies = {}
 
     def support(self, currency):
+        """Store a currency.
+
+        :param currency: :class:`rockefeller.currency.Currency` instance.
+        """
         self.currencies[currency.code] = currency
 
     def get(self, code):
+        """Get a currency by its code.
+
+        :param code: ISO 4217 currency code.
+
+        :return: :class:`rockefeller.currency.Currency` instance.
+        """
         return self.currencies.get(code)
 
 
