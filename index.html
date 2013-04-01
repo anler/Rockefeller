@@ -325,7 +325,97 @@ like this:</p>
 
 <h2>Exchange Rates Store</h2>
 
-<h2>Exchange Rates Services</h2>
+<p>By default every exchange rate you add between currencies is stored in memory,
+so if your program stops or you need the information of those rates in another
+place not necessarily written in Python then you need a custom solution.
+The way you instruct rockefeller to use the class you want to store the
+exchange rates is by creating a class that implements the following interface:</p>
+
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyExchangeRateStore</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">add_exchange_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_currency</span><span class="p">,</span> <span class="n">currency</span><span class="p">,</span> <span class="n">exchange_rate</span><span class="p">):</span>
+        <span class="sd">"""Store exchange rate of a one currency relatively to another one.</span>
+
+<span class="sd">        If rate for ``currency`` relatively to ``base_currency`` can't be</span>
+<span class="sd">        found the rate for ``base_currency`` relatively to ``currency`` will</span>
+<span class="sd">        be searched and if it's found rate is going to be its inverse.</span>
+
+<span class="sd">        :param base_currency: Currency used as the base.</span>
+<span class="sd">            :class:`~rockefeller.currency.Currency` instance.</span>
+<span class="sd">        :param currency: Currency you want to know its exchange rate in relation</span>
+<span class="sd">            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.</span>
+<span class="sd">        :param exchange_rate: Exchange rate as a string. :class:`str` instance.</span>
+<span class="sd">        """</span>
+        <span class="c"># you must implement this...</span>
+
+    <span class="k">def</span> <span class="nf">get_exchange_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_currency</span><span class="p">,</span> <span class="n">currency</span><span class="p">):</span>
+        <span class="sd">"""Get exchange rate of a currency relatively to another one.</span>
+
+<span class="sd">        :param base_currency: Currency used as the base.</span>
+<span class="sd">            :class:`~rockefeller.currency.Currency` instance.</span>
+<span class="sd">        :param currency: Currency you want to know its exchange rate in relation</span>
+<span class="sd">            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.</span>
+
+<span class="sd">        :return: Exchange rate as a string. :class:`str` instance.</span>
+<span class="sd">        """</span>
+        <span class="c"># you must implement this...</span>
+</pre></div>
+
+<p>With that in place, you just have to tell rockefeller to start using that store
+like this:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">set_exchange_rates_store</span><span class="p">(</span><span class="n">MyExchangeRateStore</span><span class="p">())</span>
+</pre></div>
+
+<h2>Contrib Stores</h2>
+
+<p>Since this library came out from a Google App Engine(GAE) project we shipped a
+<code>Currency</code> and <code>ExchangeRates</code> stores. Each of these stores are going to
+save the data in the datastore using the <code>ndb</code> models
+<code>rockefeller.gae.models.Currency</code> and <code>rockefeller.gae.models.ExchangeRate</code>.</p>
+
+<p>Use this to plug the GAE currencies store:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">set_currency_store</span><span class="p">(</span>
+            <span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">currency</span><span class="o">.</span><span class="n">GAECurrency</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Currency</span><span class="p">))</span>
+</pre></div>
+
+<p>You can tell that you can even use your own GAE model, just make sure that it
+has the <code>get(code)</code> and <code>support(currency)</code> class methods.</p>
+
+<p>Use this to plug the GAE exchange rates store:</p>
+
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">set_exchange_rates_store</span><span class="p">(</span>
+            <span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">exchange_rates</span><span class="o">.</span><span class="n">GAEExchangeRates</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">ExchangeRate</span><span class="p">))</span>
+</pre></div>
+
+<p>You can tell that you can even use your own GAE model, just make sure that it
+has the <code>add_exchange_rate(base_currency, currency, exchange_rate)</code> and
+<code>get_exchange_rate(base_currency, currency)</code> class methods.</p>
+
+<h2>Real World Example</h2>
+
+<p>This is real-world example of how we use this library. In our project, we have
+a <code>money.py</code> file that takes care of configuring the lib and initializing the
+supported currencies.</p>
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="kn">import</span> <span class="nn">rockefeller</span>
+<span class="kn">import</span> <span class="nn">rockefeller.gae.models</span>
+<span class="kn">import</span> <span class="nn">rockefeller.gae.currency</span>
+<span class="kn">import</span> <span class="nn">rockefeller.gae.exchange_rates</span>
+
+<span class="n">rockefeller</span><span class="o">.</span><span class="n">set_currency_store</span><span class="p">(</span>
+        <span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">currency</span><span class="o">.</span><span class="n">GAECurrency</span><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Currency</span><span class="p">))</span>
+
+<span class="n">rockefeller</span><span class="o">.</span><span class="n">set_exchange_rates_store</span><span class="p">(</span>
+        <span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">exchange_rates</span><span class="o">.</span><span class="n">GAEExchangeRates</span><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">gae</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">ExchangeRate</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">code</span><span class="p">,</span> <span class="n">currency</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">SUPPORTED_CURRENCIES</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+    <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="p">(</span><span class="o">**</span><span class="n">currency</span><span class="p">)</span><span class="o">.</span><span class="n">support</span><span class="p">()</span>
+
+<span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="o">.</span><span class="n">indirection_currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span>
+</pre></div>
 
 <h2>Installation</h2>
 
