@@ -337,10 +337,6 @@ class MyExchangeRateStore:
     def add_exchange_rate(self, base_currency, currency, exchange_rate):
         """Store exchange rate of a one currency relatively to another one.
 
-        If rate for ``currency`` relatively to ``base_currency`` can't be
-        found the rate for ``base_currency`` relatively to ``currency`` will
-        be searched and if it's found rate is going to be its inverse.
-
         :param base_currency: Currency used as the base.
             :class:`~rockefeller.currency.Currency` instance.
         :param currency: Currency you want to know its exchange rate in relation
