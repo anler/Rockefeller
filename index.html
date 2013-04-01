@@ -335,10 +335,6 @@ exchange rates is by creating a class that implements the following interface:</
     <span class="k">def</span> <span class="nf">add_exchange_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_currency</span><span class="p">,</span> <span class="n">currency</span><span class="p">,</span> <span class="n">exchange_rate</span><span class="p">):</span>
         <span class="sd">"""Store exchange rate of a one currency relatively to another one.</span>
 
-<span class="sd">        If rate for ``currency`` relatively to ``base_currency`` can't be</span>
-<span class="sd">        found the rate for ``base_currency`` relatively to ``currency`` will</span>
-<span class="sd">        be searched and if it's found rate is going to be its inverse.</span>
-
 <span class="sd">        :param base_currency: Currency used as the base.</span>
 <span class="sd">            :class:`~rockefeller.currency.Currency` instance.</span>
 <span class="sd">        :param currency: Currency you want to know its exchange rate in relation</span>
