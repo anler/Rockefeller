@@ -281,6 +281,13 @@ rockefeller.Money(40, eur).exchange_to(usd).exchange_to(clp)
 # => Decimal('24177.16', rockefeller.Currency.CLP)
 ```
 
+If you don't want to set a currency as the global indirection currency you can
+use a temporarily one like this:
+
+``` python
+rockefeller.Money(40, eur).exchange_to(usd, indirection_currency=rockefeller.Currency.USD).exchange_to(clp)
+# => Decimal('24177.16', rockefeller.Currency.CLP)
+
 **NOTICE**
 Take into account that the __indirection currency__ is just a workaround used
 by the ``Money`` class to convert money from one currency into another, if you
