@@ -69,6 +69,16 @@ class Money(namedtuple('Money', 'amount currency')):
         return result
 
     def exchange_rate_to(self, currency, indirection_currency=None):
+        """Get exchange rate of the currency of this money relatively to
+        ``currency``.
+
+        :param currency: Output currency.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param indirection_currency: Use this currency as the indirection
+            currency. :class:`~rockefeller.currency.Currency` instance.
+
+        :return: Exchange rate as a ``decimal`` if found, else ``None``.
+        """
         rate = get_exchange_rate(self.currency, currency)
         if rate is None:
             if not indirection_currency and Money.indirection_currency:
@@ -82,6 +92,16 @@ class Money(namedtuple('Money', 'amount currency')):
             return rate
 
     def exchange_to(self, currency, indirection_currency=None):
+        """Convert this money into money of another currency.
+
+        :param currency: Convert this money into this currency.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param indirection_currency: Use this currency as the indirection
+            currency. :class:`~rockefeller.currency.Currency` instance.
+
+        :return: Money in ``currency`` currency.
+            :class:`~rockefeller.money.Money` instance.
+        """
         rate = self.exchange_rate_to(currency,
                                      indirection_currency=indirection_currency)
 
