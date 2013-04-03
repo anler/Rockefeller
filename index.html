@@ -289,25 +289,24 @@ use a temporarily one like this:</p>
 
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">usd</span><span class="p">,</span> <span class="n">indirection_currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
 <span class="c"># =&gt; Decimal('24177.16', rockefeller.Currency.CLP)</span>
+</pre></div>
 
-<span class="o">**</span><span class="n">NOTICE</span><span class="o">**</span>
-<span class="n">Take</span> <span class="n">into</span> <span class="n">account</span> <span class="n">that</span> <span class="n">the</span> <span class="n">__indirection</span> <span class="n">currency__</span> <span class="ow">is</span> <span class="n">just</span> <span class="n">a</span> <span class="n">workaround</span> <span class="n">used</span>
-<span class="n">by</span> <span class="n">the</span> <span class="sb">``</span><span class="n">Money</span><span class="sb">``</span> <span class="k">class</span> <span class="nc">to</span> <span class="n">convert</span> <span class="n">money</span> <span class="kn">from</span> <span class="nn">one</span> <span class="nn">currency</span> <span class="nn">into</span> <span class="nn">another</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span>
-<span class="k">try</span> <span class="n">to</span> <span class="n">get</span> <span class="n">the</span> <span class="n">exchange</span> <span class="n">rate</span> <span class="n">between</span> <span class="n">two</span> <span class="n">unrelated</span> <span class="n">currencies</span> <span class="n">using</span>
-<span class="sb">``</span><span class="n">get_exchange_rate</span><span class="p">()</span><span class="sb">``</span> <span class="n">you</span> <span class="n">will</span> <span class="n">still</span> <span class="n">get</span> <span class="sb">``</span><span class="bp">None</span><span class="sb">``</span><span class="o">.</span>
+<p><strong>NOTICE</strong>
+Take into account that the <strong>indirection currency</strong> is just a workaround used
+by the <code>Money</code> class to convert money from one currency into another, if you
+try to get the exchange rate between two unrelated currencies using
+<code>get_exchange_rate()</code> you will still get <code>None</code>.</p>
 
-<span class="n">Currency</span> <span class="n">Store</span>
-<span class="o">--------------</span>
+<h2>Currency Store</h2>
 
-<span class="n">By</span> <span class="n">default</span> <span class="nb">all</span> <span class="n">supported</span> <span class="n">currencies</span> <span class="n">are</span> <span class="n">stored</span> <span class="ow">in</span> <span class="n">memory</span><span class="p">,</span> <span class="n">so</span> <span class="k">if</span> <span class="n">your</span> <span class="n">program</span>
-<span class="n">finishes</span> <span class="ow">or</span> <span class="n">you</span> <span class="n">need</span> <span class="n">the</span> <span class="n">information</span> <span class="n">of</span> <span class="n">those</span> <span class="n">currencies</span> <span class="ow">in</span> <span class="n">another</span> <span class="n">place</span> <span class="ow">not</span>
-<span class="n">necessarily</span> <span class="n">written</span> <span class="ow">in</span> <span class="n">Python</span> <span class="n">then</span> <span class="n">you</span> <span class="n">need</span> <span class="n">a</span> <span class="n">custom</span> <span class="n">solution</span><span class="o">.</span> <span class="n">But</span> <span class="n">don</span><span class="s">'t panic!</span>
-<span class="n">you</span> <span class="n">can</span> <span class="n">instruct</span> <span class="n">rockefeller</span> <span class="n">to</span> <span class="n">use</span> <span class="n">the</span> <span class="k">class</span> <span class="nc">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">store</span> <span class="n">the</span> <span class="n">currencies</span><span class="p">,</span>
-<span class="ow">in</span> <span class="n">order</span> <span class="n">to</span> <span class="n">do</span> <span class="n">so</span> <span class="n">you</span> <span class="n">just</span> <span class="n">need</span> <span class="n">to</span> <span class="n">create</span> <span class="n">a</span> <span class="k">class</span> <span class="nc">that</span> <span class="n">implements</span> <span class="n">the</span> <span class="n">following</span>
-<span class="n">interface</span><span class="p">:</span>
+<p>By default all supported currencies are stored in memory, so if your program
+finishes or you need the information of those currencies in another place not
+necessarily written in Python then you need a custom solution. But don't panic!
+you can instruct rockefeller to use the class you want to store the currencies,
+in order to do so you just need to create a class that implements the following
+interface:</p>
 
-<span class="sb">``</span><span class="err">`</span> <span class="n">python</span>
-<span class="k">class</span> <span class="nc">MyCurrencyStore</span><span class="p">:</span>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyCurrencyStore</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">support</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">currency</span><span class="p">):</span>
         <span class="sd">"""Store a currency.</span>
 
