@@ -70,6 +70,15 @@ class TestMoney:
         exchange = eur.exchange_to(rockefeller.Currency.CLP)
         assert exchange == clp
 
+    def test_exchange_indirectional_param(self):
+        eur = rockefeller.Money(amount=100, currency=rockefeller.Currency.EUR)
+        clp = rockefeller.Money(amount=60551,
+                                currency=rockefeller.Currency.CLP)
+
+        exchange = eur.exchange_to(rockefeller.Currency.CLP,
+                                   indirection_currency=rockefeller.Currency.USD)
+        assert exchange == clp
+
     def test_equality(self):
         usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
         usd2 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)

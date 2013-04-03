@@ -68,21 +68,22 @@ class Money(namedtuple('Money', 'amount currency')):
             result = Money(0, self.currency)
         return result
 
-    def exchange_rate_to(self, currency):
+    def exchange_rate_to(self, currency, indirection_currency=None):
         rate = get_exchange_rate(self.currency, currency)
-        if rate is None and Money.indirection_currency:
-            rate_from_base = get_exchange_rate(self.currency,
-                                               Money.indirection_currency)
-            rate_base_to = get_exchange_rate(Money.indirection_currency,
-                                             currency)
+        if rate is None:
+            if not indirection_currency and Money.indirection_currency:
+                indirection_currency = Money.indirection_currency
+            rate_from_base = get_exchange_rate(self.currency, indirection_currency)
+            rate_base_to = get_exchange_rate(indirection_currency, currency)
             if rate_from_base and rate_base_to:
                 rate = rate_from_base * rate_base_to
 
         if rate:
             return rate
 
-    def exchange_to(self, currency):
-        rate = self.exchange_rate_to(currency)
+    def exchange_to(self, currency, indirection_currency=None):
+        rate = self.exchange_rate_to(currency,
+                                     indirection_currency=indirection_currency)
 
         if rate:
             amount = round_amount(self.amount * rate, currency)
