@@ -1,4 +1,6 @@
 # coding: utf-8
+import decimal
+
 import mock
 
 import rockefeller
@@ -38,6 +40,12 @@ class TestExchangeRates:
         assert er.store.get_exchange_rate.call_count == 2
         er.store.get_exchange_rate.assert_called_with(eur, usd)
         assert rate is None
+
+
+class TestExchangeRate:
+    def test_rate_as_decimal(self):
+        er = rockefeller.ExchangeRate(usd, eur, .78)
+        assert isinstance(er.rate, decimal.Decimal)
 
 
 class TestMemoryExchangeRates:
