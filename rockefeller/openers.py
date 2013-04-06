@@ -22,7 +22,10 @@ class DefaultOpener(object):
         if not url.endswith('?'):
             url += '?'
         url += urllib.urlencode(params)
-        response = self.opener.open(url)
+        try:
+            response = self.opener.open(url)
+        except urllib2.HTTPError as e:
+            response = e
 
         return json.load(response)
 

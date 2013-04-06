@@ -2,6 +2,12 @@ from .exchange_rates import ExchangeRate
 from .openers import DefaultOpener
 
 
+class ServiceError(Exception):
+    """Raised when the request to the exchange rates service is invalid and
+    the service is not able to fullfil it.
+    """
+
+
 class OpenExchangeRates(object):
     """Interface to openexchangerates.org service.
 
@@ -12,6 +18,15 @@ class OpenExchangeRates(object):
         `use_https`
             Defaults to `False`. Whether or not use https as the protocol.
     """
+    class Results(object):
+        def __init__(self, rates):
+            self.rates = rates
+
+        def __iter__(self):
+            base = self.rates['base']
+            for code, rate in self.rates['rates'].iteritems():
+                yield ExchangeRate(base, code, rate)
+
     api_endpoint = '{protocol}://openexchangerates.org/api/{endpoint}'
     url_opener = DefaultOpener()
 
@@ -35,7 +50,6 @@ class OpenExchangeRates(object):
         """
         params.update(app_id=self.app_id)
         rates = self.url_opener.open(self.get_url('latest'), params)
-        base = rates['base']
-
-        for code, rate in rates['rates'].iteritems():
-            yield ExchangeRate(base, code, rate)
+        if not 'base' in rates:
+            raise ServiceError(rates.get('description', 'Unknow Error'))
+        return self.Results(rates)
