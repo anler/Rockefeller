@@ -39,3 +39,9 @@ class LoggingHandler(urllib2.BaseHandler):
         return response
 
 
+def basic_config_logging_handler(name='rockefeller.services'):
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    logger.addHandler(ch)

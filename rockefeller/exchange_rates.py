@@ -2,29 +2,25 @@ import decimal
 from collections import namedtuple
 
 
-class ExchangeRate(namedtuple('ExchangeRate', 'currency_from currency_to rate')):
+class ExchangeRate(namedtuple('ExchangeRate', 'code_from code_to rate')):
     """Class for creating exchange rate objects. An exchange rate object
-    stores the ``rate`` between a currency ``currency_from`` and another
-    ``currency_to``.
+    stores the ``rate`` between two currency codes.
 
     Initialization params:
 
-        ``currency_from``
-            Currency used as the base. :class:`rockefeller.currency.Currency`
-            instance.
+        ``code_from``
+            Code of currency used as the base.
 
-        ``currency_to``
-            Currency used as the target. :class:`rockefeller.currency.Currency`
-            instance.
+        ``code_to``
+            Code of currency used as the target.
 
         ``rate``
-            Exchange rate of currency_from -> currency_to. numeric or string.
+            Exchange rate between currency codes. numeric or string.
     """
-    def __new__(cls, currency_from, currency_to, rate):
+    def __new__(cls, code_from, code_to, rate):
         if not isinstance(rate, decimal.Decimal):
             rate = decimal.Decimal(str(rate))
-        return super(ExchangeRate, cls).__new__(cls, currency_from, currency_to,
-                                                rate)
+        return super(ExchangeRate, cls).__new__(cls, code_from, code_to, rate)
 
 
 class ExchangeRates(object):
