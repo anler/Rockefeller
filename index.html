@@ -4,28 +4,40 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Rockefeller by Floqq</title>
-
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
   </head>
   <body>
-    <div class="wrapper">
+
       <header>
         <h1>Rockefeller</h1>
         <p>Library for dealing with money and currency conversion in Python</p>
-        <p class="view"><a href="https://github.com/Floqq/Rockefeller">View the Project on GitHub <small>Floqq/Rockefeller</small></a></p>
-        <ul>
-          <li><a href="https://github.com/Floqq/Rockefeller/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/Floqq/Rockefeller/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/Floqq/Rockefeller">View On <strong>GitHub</strong></a></li>
-        </ul>
       </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/Floqq/Rockefeller" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/Floqq/Rockefeller/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/Floqq/Rockefeller/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
       <section>
         <h1>Rockefeller</h1>
 
@@ -324,10 +336,18 @@ interface:</p>
         <span class="c"># you must implement this...</span>
 </pre></div>
 
-<p>With that in place, you just have to tell rockefeller to start using that store
-like this:</p>
+<p>With that in place, you just have to tell rockefeller to globally start using
+that store like this:</p>
 
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">set_currency_store</span><span class="p">(</span><span class="n">MyCurrencyStore</span><span class="p">())</span>
+</pre></div>
+
+<p>Or to locally use that store like this:</p>
+
+<div class="highlight"><pre><span class="n">eur</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'Euro'</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s">'EUR'</span><span class="p">,</span> <span class="n">numeric</span><span class="o">=</span><span class="s">'978'</span><span class="p">,</span>
+                           <span class="n">symbol</span><span class="o">=</span><span class="s">u'€'</span><span class="p">,</span> <span class="n">exponent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">my_store</span> <span class="o">=</span> <span class="n">MyCurrencyStore</span><span class="p">()</span>
+<span class="n">eur</span><span class="o">.</span><span class="n">support</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">my_store</span><span class="p">)</span>
 </pre></div>
 
 <h2>Exchange Rates Store</h2>
@@ -438,11 +458,11 @@ install it just download the source and run:</p>
 <pre><code>python setup.py test
 </code></pre>
       </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/Floqq">Floqq</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/Floqq">Floqq</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     
   </body>
