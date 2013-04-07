@@ -24,6 +24,12 @@ class TestCurrency:
 
         rockefeller.Currency.store.support.assert_called_once_with(usd)
 
+    def test_support_custom_store(self):
+        store = mock.Mock()
+        usd.support(store=store)
+
+        store.support.assert_called_once_with(usd)
+
     def test_get(self):
         rockefeller.Currency.store = mock.Mock()
         rockefeller.Currency.get('EUR')

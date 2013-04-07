@@ -324,11 +324,20 @@ class MyCurrencyStore:
         # you must implement this...
 ```
 
-With that in place, you just have to tell rockefeller to start using that store
-like this:
+With that in place, you just have to tell rockefeller to globally start using
+that store like this:
 
 ``` python
 rockefeller.set_currency_store(MyCurrencyStore())
+```
+
+Or to locally use that store like this:
+
+``` python
+eur = rockefeller.Currency(name='Euro', code='EUR', numeric='978',
+                           symbol=u'€', exponent=2)
+my_store = MyCurrencyStore()
+eur.support(store=my_store)
 ```
 
 Exchange Rates Store

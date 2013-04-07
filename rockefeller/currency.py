@@ -69,8 +69,16 @@ class Currency(namedtuple('Currency', 'name code numeric exponent symbol')):
     def __hash__(self):
         return int(self.numeric)
 
-    def support(self):
-        Currency.store.support(self)
+    def support(self, store=None):
+        """Support/store a currency.
+
+        :param store: Use this store instead of ``Currency.store``.
+
+        :return: ``self`` :class:`~rockefeller.currency.Currency` instance.
+        """
+        if store is None:
+            store = self.__class__.store
+        store.support(self)
         return self
 
     @classmethod
