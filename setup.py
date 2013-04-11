@@ -26,7 +26,7 @@ class PyTest(TestCommand):
 
 setup(name="Rockefeller",
       version="1.0",
-      description="Currencies and exchange rates library.",
+      description="Money, currencies and exchange rates library.",
       long_description=README,
       author="ikame",
       author_email="anler86@gmail.com",
