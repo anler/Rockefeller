@@ -4,6 +4,8 @@ import sys
 from setuptools import setup
 from setuptools.command.test import test as TestCommand
 
+import rockefeller
+
 py_version = sys.version_info[:2]
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -25,7 +27,7 @@ class PyTest(TestCommand):
 
 
 setup(name="Rockefeller",
-      version="1.0",
+      version=rockefeller.__version__,
       description="Money, currencies and exchange rates library.",
       long_description=README,
       author="ikame",
