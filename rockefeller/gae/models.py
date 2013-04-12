@@ -18,6 +18,7 @@ class Currency(ndb.Model):
         obj = cls.get_key(code).get()
         if obj:
             return currency.Currency(**obj.to_dict())
+        return None
 
     @classmethod
     def support(cls, currency):
@@ -47,3 +48,4 @@ class ExchangeRate(ndb.Model):
         obj = cls.get_key(base_currency, currency).get()
         if obj:
             return obj.exchange_rate
+        return None

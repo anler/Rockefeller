@@ -78,6 +78,9 @@ class Money(namedtuple('Money', 'amount currency')):
             currency. :class:`~rockefeller.currency.Currency` instance.
 
         :return: Exchange rate as a ``decimal`` if found, else ``None``.
+
+        :raises: ValueError if Exchange rate bettween currencies is not
+            defined.
         """
         rate = get_exchange_rate(self.currency, currency)
         if rate is None:
@@ -90,6 +93,8 @@ class Money(namedtuple('Money', 'amount currency')):
 
         if rate:
             return rate
+        raise ValueError(
+            'Exchange rate {}-{} not defined.'.format(self.currency, currency))
 
     def exchange_to(self, currency, indirection_currency=None):
         """Convert this money into money of another currency.
@@ -101,10 +106,11 @@ class Money(namedtuple('Money', 'amount currency')):
 
         :return: Money in ``currency`` currency.
             :class:`~rockefeller.money.Money` instance.
+
+        :raises: ValueError if Exchange rate bettween currencies is not
+            defined.
         """
         rate = self.exchange_rate_to(currency,
                                      indirection_currency=indirection_currency)
-
-        if rate:
-            amount = round_amount(self.amount * rate, currency)
-            return self.__class__(amount=amount, currency=currency)
+        amount = round_amount(self.amount * rate, currency)
+        return self.__class__(amount=amount, currency=currency)
