@@ -119,9 +119,9 @@ class Money(namedtuple('Money', 'amount currency')):
         else:
             exchange_rate = to_decimal(exchange_rate)
 
-        if exchange_rate:
-            amount = round_amount(self.amount * exchange_rate, currency)
-            return self.__class__(amount=amount, currency=currency)
+        if exchange_rate is None:
+            raise ExchangeError('Exchange rate {}-{} not defined.'.format(
+                self.currency, currency))
 
-        raise ExchangeError(
-            'Exchange rate {}-{} not defined.'.format(self.currency, currency))
+        amount = round_amount(self.amount * exchange_rate, currency)
+        return self.__class__(amount=amount, currency=currency)
