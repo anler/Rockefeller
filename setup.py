@@ -11,9 +11,10 @@ py_version = sys.version_info[:2]
 here = os.path.abspath(os.path.dirname(__file__))
 
 try:
-    README = open(os.path.join(here, "README.txt")).read()
+    README = open(os.path.join(here, "README.rst")).read()
+    README += open(os.path.join(here, "HISTORY.rst")).read()
 except IOError:
-    README = ""
+    README = "http://floqq.github.com/Rockefeller"
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -44,6 +45,7 @@ setup(name="Rockefeller",
           "Intended Audience :: Developers",
           "Intended Audience :: Financial and Insurance Industry",
           "Operating System :: OS Independent",
+          "Programming Language :: Python :: 2.7",
           "Topic :: Software Development :: Libraries :: Python Modules",
           "Topic :: Office/Business :: Financial"])
 
