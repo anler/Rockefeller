@@ -251,13 +251,13 @@ And you want to get the exchange rate from __eur__ to __clp__:
 
 ``` python
 rockefeller.Money(40, eur).exchange_to(clp)
-# => None
+# => ExchangeError(...)
 ```
 
-It will be ``None`` since there's no direct relation between __eur -> clp__ or
-__clp -> eur__. Of course, this behavior is not desired because storing all the
-rates between currencies will require 33,856 associations (taking into account
-that there's 184 different currencies).
+It will raise a ``ExchangeError`` since there's no direct relation between
+__eur -> clp__ or __clp -> eur__. Of course, this behavior is not desired
+because storing all the rates between currencies will require 33,856
+associations (taking into account that there's 184 different currencies).
 
 The workaround to this problem is setting the __indirection currency__ like
 this:
@@ -271,7 +271,7 @@ currency will be checked, and if set, then this:
 
 ``` python
 rockefeller.Money(40, eur).exchange_to(clp)
-# => None
+# => ExchangeError(...)
 ```
 
 will be treated internally as this:
@@ -292,8 +292,8 @@ rockefeller.Money(40, eur).exchange_to(usd, indirection_currency=rockefeller.Cur
 **NOTICE**
 Take into account that the __indirection currency__ is just a workaround used
 by the ``Money`` class to convert money from one currency into another, if you
-try to get the exchange rate between two unrelated currencies using
-``get_exchange_rate()`` you will still get ``None``.
+try to get (not convert) the exchange rate between two unrelated currencies
+using ``get_exchange_rate()`` you will still get ``None``.
 
 Currency Store
 --------------
