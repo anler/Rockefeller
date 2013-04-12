@@ -58,7 +58,7 @@ class TestMoney:
         rockefeller.Money.indirection_currency = None
         usd = rockefeller.Money(amount=100, currency=rockefeller.Currency.EUR)
 
-        with pytest.raises(ValueError):
+        with pytest.raises(rockefeller.exceptions.ExchangeError):
             exchange = usd.exchange_to(rockefeller.Currency.CLP)
 
     def test_exchange_indirectional(self):
