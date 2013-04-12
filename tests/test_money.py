@@ -58,8 +58,8 @@ class TestMoney:
         rockefeller.Money.indirection_currency = None
         usd = rockefeller.Money(amount=100, currency=rockefeller.Currency.EUR)
 
-        exchange = usd.exchange_to(rockefeller.Currency.CLP)
-        assert exchange is None
+        with pytest.raises(rockefeller.exceptions.ExchangeError):
+            exchange = usd.exchange_to(rockefeller.Currency.CLP)
 
     def test_exchange_indirectional(self):
         rockefeller.Money.indirection_currency = rockefeller.Currency.USD

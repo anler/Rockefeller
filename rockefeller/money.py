@@ -2,6 +2,7 @@ import decimal
 from collections import namedtuple
 
 from .exchange_rates import get_exchange_rate
+from .exceptions import ExchangeError
 
 
 def round_amount(amount, currency):
@@ -108,6 +109,9 @@ class Money(namedtuple('Money', 'amount currency')):
 
         :return: Money in ``currency`` currency.
             :class:`~rockefeller.money.Money` instance.
+
+        :raises: :class:`~rockefeller.exceptions.ExchangeError`
+            if Exchange rate bettween currencies is not defined.
         """
         if exchange_rate is None:
             exchange_rate = self.get_exchange_rate_to(
@@ -115,6 +119,9 @@ class Money(namedtuple('Money', 'amount currency')):
         else:
             exchange_rate = to_decimal(exchange_rate)
 
-        if exchange_rate:
-            amount = round_amount(self.amount * exchange_rate, currency)
-            return self.__class__(amount=amount, currency=currency)
+        if exchange_rate is None:
+            raise ExchangeError('Exchange rate {}-{} not defined.'.format(
+                self.currency, currency))
+
+        amount = round_amount(self.amount * exchange_rate, currency)
+        return self.__class__(amount=amount, currency=currency)
