@@ -7,38 +7,37 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
+    <script src="javascripts/respond.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
   </head>
   <body>
-
-      <header>
-        <h1>Rockefeller</h1>
-        <p>Library for dealing with money and currency conversion in Python</p>
-      </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/Floqq/Rockefeller" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/Floqq/Rockefeller/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/Floqq/Rockefeller/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/Floqq/Rockefeller">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/Floqq/Rockefeller/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/Floqq/Rockefeller/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
     <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
+
       <section>
+        <div id="title">
+          <h1>Rockefeller</h1>
+          <p>Library for dealing with money and currency conversion in Python</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/Floqq">Floqq</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
         <h1>Rockefeller</h1>
 
 <p>Library for dealing with money and currency conversion in Python. It provides
@@ -269,13 +268,13 @@ to which the rest of the currency rates are related.</p>
 <p>And you want to get the exchange rate from <strong>eur</strong> to <strong>clp</strong>:</p>
 
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
-<span class="c"># =&gt; None</span>
+<span class="c"># =&gt; ExchangeError(...)</span>
 </pre></div>
 
-<p>It will be <code>None</code> since there's no direct relation between <strong>eur -&gt; clp</strong> or
-<strong>clp -&gt; eur</strong>. Of course, this behavior is not desired because storing all the
-rates between currencies will require 33,856 associations (taking into account
-that there's 184 different currencies).</p>
+<p>It will raise a <code>ExchangeError</code> since there's no direct relation between
+<strong>eur -&gt; clp</strong> or <strong>clp -&gt; eur</strong>. Of course, this behavior is not desired
+because storing all the rates between currencies will require 33,856
+associations (taking into account that there's 184 different currencies).</p>
 
 <p>The workaround to this problem is setting the <strong>indirection currency</strong> like
 this:</p>
@@ -287,7 +286,7 @@ this:</p>
 currency will be checked, and if set, then this:</p>
 
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
-<span class="c"># =&gt; None</span>
+<span class="c"># =&gt; ExchangeError(...)</span>
 </pre></div>
 
 <p>will be treated internally as this:</p>
@@ -306,8 +305,8 @@ use a temporarily one like this:</p>
 <p><strong>NOTICE</strong>
 Take into account that the <strong>indirection currency</strong> is just a workaround used
 by the <code>Money</code> class to convert money from one currency into another, if you
-try to get the exchange rate between two unrelated currencies using
-<code>get_exchange_rate()</code> you will still get <code>None</code>.</p>
+try to get (not convert) the exchange rate between two unrelated currencies
+using <code>get_exchange_rate()</code> you will still get <code>None</code>.</p>
 
 <h2>Currency Store</h2>
 
@@ -458,12 +457,19 @@ install it just download the source and run:</p>
 <pre><code>python setup.py test
 </code></pre>
       </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/Floqq">Floqq</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
-      </footer>
+
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-40319293-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
