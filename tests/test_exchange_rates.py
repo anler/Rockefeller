@@ -75,3 +75,8 @@ class TestGAEExchangeRates:
         st.get_exchange_rate(usd, eur)
 
         st.model.get_exchange_rate.assert_called_once_with(usd, eur)
+
+    def test_exchange_rate_same_currency(self):
+        st = rockefeller.gae.exchange_rates.GAEExchangeRates(mock.Mock())
+
+        assert decimal.Decimal(1) == st.get_exchange_rate(eur, eur)
