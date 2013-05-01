@@ -27,7 +27,7 @@ class Currency(ndb.Model):
 
     @classmethod
     def not_support(cls, currency):
-        ndb.Key(cls.get_key(currency.code)).delete()
+        cls.get_key(currency.code).delete()
 
 
 class ExchangeRate(ndb.Model):
