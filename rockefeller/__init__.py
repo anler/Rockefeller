@@ -3,6 +3,7 @@ from .exchange_rates import (ExchangeRate, ExchangeRates, MemoryExchangeRates,
                              remove_exchange_rate, get_exchange_rate)
 from .currency import Currency, MemoryCurrency
 from .money import Money
+from .exceptions import ExchangeError, MoneyError
 
 
 def set_currency_store(store):

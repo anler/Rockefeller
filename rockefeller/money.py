@@ -2,11 +2,26 @@ import decimal
 from collections import namedtuple
 
 from .exchange_rates import get_exchange_rate
-from .exceptions import ExchangeError
+from .exceptions import ExchangeError, MoneyError
 
 
 def round_amount(amount, currency):
+    """Round a given amount using curreny's exponent.
+
+    :param amount: :class:`~decimal.Decimal` number.
+    :param currency: :class:`~rockefeller.currency.Currency` object.
+
+    :return: Rounded amount as a :class:`~decimal.Decimal` number.
+
+    :raises: :class:`~rockefeller.exceptions.MoneyError` if an invalid currency
+        is supplied.
+    """
+    try:
+        exponent = currency.exponent
+    except AttributeError:
+        raise MoneyError('Wrong currency `{!r}` for money.'.format(currency))
     exponent = '1.' + '0' * currency.exponent
+
     return amount.quantize(decimal.Decimal(exponent),
                            rounding=decimal.ROUND_HALF_UP)
 

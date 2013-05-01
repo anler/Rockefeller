@@ -28,6 +28,12 @@ class TestMoney:
 
         assert 100.00 == float(usd)
 
+    def test_as_float_invalid_currency(self):
+        usd = rockefeller.Money(amount=100, currency=None)
+
+        with pytest.raises(rockefeller.MoneyError):
+            float(usd)
+
     def test_exponent_rounding(self):
         usd = rockefeller.Money(amount=100.235,
                                 currency=rockefeller.Currency.USD)
