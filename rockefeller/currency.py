@@ -14,6 +14,15 @@ class MemoryCurrency(object):
         """
         self.currencies[currency.code] = currency
 
+    def not_support(self, currency):
+        """Remove a currency support.
+
+        :param currency: :class:`rockefeller.currency.Currency` instance.
+        """
+        code = currency.code
+        if code in self.currencies:
+            del self.currencies[code]
+
     def get(self, code):
         """Get a currency by its code.
 
@@ -69,6 +78,19 @@ class Currency(namedtuple('Currency', 'name code numeric exponent symbol')):
     def __hash__(self):
         return int(self.numeric)
 
+    def _get_store(self, store=None):
+        """Get the corresponding store.
+
+        :param store: A currency store object.
+
+        :return: If ``store`` param is not ``None`` is returned, otherwise
+            ``Currency.store`` is returned.
+        """
+        if store is None:
+            store = self.__class__.store
+
+        return store
+
     def support(self, store=None):
         """Support/store a currency.
 
@@ -76,9 +98,17 @@ class Currency(namedtuple('Currency', 'name code numeric exponent symbol')):
 
         :return: ``self`` :class:`~rockefeller.currency.Currency` instance.
         """
-        if store is None:
-            store = self.__class__.store
-        store.support(self)
+        self._get_store(store).support(self)
+        return self
+
+    def not_support(self, store=None):
+        """Stop supporting a currency.
+
+        :param store: Use this store instead of ``Currency.store``.
+
+        :return: ``self`` :class:`~rockefeller.currency.Currency` instance.
+        """
+        self._get_store(store).not_support(self)
         return self
 
     @classmethod

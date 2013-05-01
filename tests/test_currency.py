@@ -24,6 +24,12 @@ class TestCurrency:
 
         rockefeller.Currency.store.support.assert_called_once_with(usd)
 
+    def test_not_support(self):
+        rockefeller.Currency.store = mock.Mock()
+        usd.not_support()
+
+        rockefeller.Currency.store.not_support.assert_called_once_with(usd)
+
     def test_support_custom_store(self):
         store = mock.Mock()
         usd.support(store=store)
@@ -65,6 +71,19 @@ class TestMemoryCurrency:
 
         assert st.get('USD') == usd
 
+    def test_not_support_supported(self):
+        st = rockefeller.MemoryCurrency()
+        st.support(usd)
+        st.not_support(usd)
+
+        assert st.get('USD') is None
+
+    def test_not_support(self):
+        st = rockefeller.MemoryCurrency()
+        st.not_support(usd)
+
+        assert st.get('USD') is None
+
     def test_not_stored_currency(self):
         st = rockefeller.MemoryCurrency()
 
@@ -77,6 +96,13 @@ class TestGAECurrency:
         st.support(usd)
 
         st.model.support.assert_called_once_with(usd)
+
+    def test_not_support(self):
+        st = rockefeller.gae.currency.GAECurrency(mock.Mock())
+        st.support(usd)
+        st.not_support(usd)
+
+        st.model.not_support.assert_called_once_with(usd)
 
     def test_get(self):
         st = rockefeller.gae.currency.GAECurrency(mock.Mock())

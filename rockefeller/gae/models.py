@@ -25,6 +25,10 @@ class Currency(ndb.Model):
         obj = cls(key=cls.get_key(currency.code), **currency._asdict())
         obj.put()
 
+    @classmethod
+    def not_support(cls, currency):
+        ndb.Key(cls.get_key(currency.code)).delete()
+
 
 class ExchangeRate(ndb.Model):
     base_currency = ndb.StringProperty(required=True)
