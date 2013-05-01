@@ -125,4 +125,5 @@ class MemoryExchangeRates(object):
 
 exchange_rates = ExchangeRates(store=MemoryExchangeRates())
 add_exchange_rate = exchange_rates.add_exchange_rate
+remove_exchange_rate = exchange_rates.remove_exchange_rate
 get_exchange_rate = exchange_rates.get_exchange_rate

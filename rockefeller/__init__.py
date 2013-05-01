@@ -1,6 +1,6 @@
 from .exchange_rates import (ExchangeRate, ExchangeRates, MemoryExchangeRates,
                              exchange_rates, add_exchange_rate,
-                             get_exchange_rate)
+                             remove_exchange_rate, get_exchange_rate)
 from .currency import Currency, MemoryCurrency
 from .money import Money
 
