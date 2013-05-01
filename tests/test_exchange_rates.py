@@ -24,6 +24,12 @@ class TestExchangeRates:
 
         er.store.add_exchange_rate.assert_called_once_with(usd, eur, '1.0')
 
+    def test_remove_exchange_rate(self):
+        er = rockefeller.ExchangeRates(store=mock.Mock())
+        er.remove_exchange_rate(base_currency=usd, currency=eur)
+
+        er.store.remove_exchange_rate.assert_called_once_with(usd, eur)
+
     def test_get_exchange_rate(self):
         er = rockefeller.ExchangeRates(store=mock.Mock())
         er.store.get_exchange_rate.return_value = 1.0
@@ -49,12 +55,32 @@ class TestExchangeRate:
 
 
 class TestMemoryExchangeRates:
-    def test_add_get_exchange_rate(self):
+    def test_add_exchange_rate(self):
         st = rockefeller.MemoryExchangeRates()
         st.add_exchange_rate(usd, eur, 1.0)
 
         assert st.get_exchange_rate(
             rockefeller.Currency.USD, rockefeller.Currency.EUR) == 1.0
+
+    def test_remove_exchange_rate_added(self):
+        st = rockefeller.MemoryExchangeRates()
+        st.add_exchange_rate(usd, eur, 1.0)
+        st.add_exchange_rate(eur, usd, 1.0)
+        st.remove_exchange_rate(usd, eur)
+
+        assert st.get_exchange_rate(
+            rockefeller.Currency.USD, rockefeller.Currency.EUR) is None
+        assert st.get_exchange_rate(
+            rockefeller.Currency.EUR, rockefeller.Currency.USD) is None
+
+    def test_remove_exchange_rate(self):
+        st = rockefeller.MemoryExchangeRates()
+        st.remove_exchange_rate(usd, eur)
+
+        assert st.get_exchange_rate(
+            rockefeller.Currency.USD, rockefeller.Currency.EUR) is None
+        assert st.get_exchange_rate(
+            rockefeller.Currency.EUR, rockefeller.Currency.USD) is None
 
     def test_not_stored_exchange_rate(self):
         st = rockefeller.MemoryExchangeRates()
@@ -69,6 +95,21 @@ class TestGAEExchangeRates:
         st.add_exchange_rate(usd, eur, 1.0)
 
         st.model.add_exchange_rate.assert_called_once_with(usd, eur, 1.0)
+
+    def test_remove_exchange_rate_added(self):
+        st = rockefeller.gae.exchange_rates.GAEExchangeRates(mock.Mock())
+        st.add_exchange_rate(usd, eur, 1.0)
+        st.remove_exchange_rate(usd, eur)
+
+        st.model.remove_exchange_rate.assert_any_call(usd, eur)
+        st.model.remove_exchange_rate.assert_any_call(eur, usd)
+
+    def test_remove_exchange_rate(self):
+        st = rockefeller.gae.exchange_rates.GAEExchangeRates(mock.Mock())
+        st.remove_exchange_rate(usd, eur)
+
+        st.model.remove_exchange_rate.assert_any_call(usd, eur)
+        st.model.remove_exchange_rate.assert_any_call(eur, usd)
 
     def test_get_exchange_rate(self):
         st = rockefeller.gae.exchange_rates.GAEExchangeRates(mock.Mock())

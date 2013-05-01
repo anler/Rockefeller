@@ -28,7 +28,25 @@ class ExchangeRates(object):
         self.store = store
 
     def add_exchange_rate(self, base_currency, currency, exchange_rate):
-        self.store.add_exchange_rate(base_currency, currency, str(exchange_rate))
+        """Store an exchange rate between two currencies.
+
+        :param base_currency: Currency to use as base.
+        :param currency: Currency to use as target.
+        :param exchange_rate: Exchange rate between ``base_currency`` and
+            ``currency``.
+        """
+        self.store.add_exchange_rate(base_currency, currency,
+                                     str(exchange_rate))
+
+    def remove_exchange_rate(self, base_currency, currency):
+        """Remove an exchange rate between two currencies.
+
+        :param base_currency: Currency to use as base.
+        :param currency: Currency to use as target.
+        :param exchange_rate: Exchange rate between ``base_currency`` and
+            ``currency``.
+        """
+        self.store.remove_exchange_rate(base_currency, currency)
 
     def get_exchange_rate(self, base_currency, currency):
         """Get exchange rate of a currency relatively to another one.
@@ -39,10 +57,11 @@ class ExchangeRates(object):
 
         :param base_currency: Currency used as the base.
             :class:`~rockefeller.currency.Currency` instance.
-        :param currency: Currency you want to know its exchange rate in relation
-            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in
+            relation to ``base_currency``.
+            :class:`~rockefeller.currency.Currency` instance.
 
-        :return: Exchange rate as a ``decimal.``
+        :return: Exchange rate as a ``decimal``.
         """
         rate = self.store.get_exchange_rate(base_currency, currency)
         if rate is None:
@@ -64,23 +83,41 @@ class MemoryExchangeRates(object):
         return hash(base_currency), hash(currency)
 
     def add_exchange_rate(self, base_currency, currency, exchange_rate):
-        """Store exchange rate of a one currency relatively to another one.
+        """Store exchange rate of one currency relatively to another one.
 
         :param base_currency: Currency used as the base.
             :class:`~rockefeller.currency.Currency` instance.
-        :param currency: Currency you want to know its exchange rate in relation
-            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in
+            relation to ``base_currency``.
+            :class:`~rockefeller.currency.Currency` instance.
         :param exchange_rate: Exchange rate as a string. :class:`str` instance.
         """
         self.rates[self._get_key(base_currency, currency)] = exchange_rate
+
+    def remove_exchange_rate(self, base_currency, currency):
+        """Remove exchange rate of one currency relatively to another one.
+
+        If an exchange rate between ``base_currency`` and ``currency`` can't be
+        found is going to try to find a rate between ``currency`` and
+        ``base_currency``.
+
+        :param base_currency: Currency used as the base.
+            :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in
+            relation to ``base_currency``.
+            :class:`~rockefeller.currency.Currency` instance.
+        """
+        self.rates.pop(self._get_key(base_currency, currency), None)
+        self.rates.pop(self._get_key(currency, base_currency), None)
 
     def get_exchange_rate(self, base_currency, currency):
         """Get exchange rate of a currency relatively to another one.
 
         :param base_currency: Currency used as the base.
             :class:`~rockefeller.currency.Currency` instance.
-        :param currency: Currency you want to know its exchange rate in relation
-            to ``base_currency.`` :class:`~rockefeller.currency.Currency` instance.
+        :param currency: Currency you want to know its exchange rate in
+            relation to ``base_currency``.
+            :class:`~rockefeller.currency.Currency` instance.
 
         :return: Exchange rate as a string. :class:`str` instance.
         """

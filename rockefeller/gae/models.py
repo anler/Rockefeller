@@ -48,6 +48,10 @@ class ExchangeRate(ndb.Model):
         obj.put()
 
     @classmethod
+    def remove_exchange_rate(cls, base_currency, currency, exchange_rate):
+        cls.get_key(base_currency, currency).delete()
+
+    @classmethod
     def get_exchange_rate(cls, base_currency, currency):
         obj = cls.get_key(base_currency, currency).get()
         if obj:
