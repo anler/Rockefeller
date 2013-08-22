@@ -411,6 +411,71 @@ You can tell that you can even use your own GAE model, just make sure that it
 has the ``add_exchange_rate(base_currency, currency, exchange_rate)`` and
 ``get_exchange_rate(base_currency, currency)`` class methods.
 
+Exchange Rates Service
+----------------------
+
+This library comes with built-in support for openexchangerates service, that is, a service to automatically retrieve the current status of the exchange rates between different currencies.
+
+Here's is simple example of what you have to do in order to be up to date with the exchange rates:
+
+```python
+import logging
+
+from django.conf import settings
+from django import http
+
+import rockefeller
+from rockefeller.services import OpenExchangeRates, ServiceError
+
+
+def cron_update_exchange_rates(req):
+    service = OpenExchangeRates(app_id=settings.EXCHANGE_RATES_APP_ID)
+
+    try:
+        exchange_rates = service.latest()
+    except ServiceError as e:
+        logging.exception(e)
+    else:
+        for exchange_rate in exchange_rates:
+            base_currency = rockefeller.Currency.get(exchange_rate.code_from)
+            currency = rockefeller.Currency.get(exchange_rate.code_to)
+            rockefeller.add_exchange_rate(base_currency, currency, exchange_rate.rate)
+            
+    return http.HttpResponse('Exchange rates updated...')
+```
+
+If you're using App Engine, we provide an urlopener that uses App Engine `urlfetch` service:
+
+```python
+import logging
+
+from django.conf import settings
+from django import http
+
+import rockefeller
+from rockefeller.services import OpenExchangeRates, ServiceError
+from rockefeller.openers import GaeOpener
+
+
+
+def cron_update_exchange_rates(req):
+    OpenExchangeRates.url_opener = GaeOpener()
+    service = OpenExchangeRates(app_id=settings.EXCHANGE_RATES_APP_ID)
+
+    try:
+        exchange_rates = service.latest()
+    except ServiceError as e:
+        logging.exception(e)
+    else:
+        for exchange_rate in exchange_rates:
+            base_currency = rockefeller.Currency.get(exchange_rate.code_from)
+            currency = rockefeller.Currency.get(exchange_rate.code_to)
+            rockefeller.add_exchange_rate(base_currency, currency, exchange_rate.rate)
+            
+    return http.HttpResponse('Exchange rates updated...')
+```
+
+
 Real World Example
 ------------------
 
