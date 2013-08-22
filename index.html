@@ -35,10 +35,11 @@
           <p>Library for dealing with money and currency conversion in Python</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/Floqq">Floqq</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>Rockefeller</h1>
+        <h1>
+<a name="rockefeller" class="anchor" href="#rockefeller"><span class="octicon octicon-link"></span></a>Rockefeller</h1>
 
 <p>Library for dealing with money and currency conversion in Python. It provides
 tools for <strong>storing</strong> currencies and exchange rates, <strong>converting</strong> from one
@@ -46,7 +47,8 @@ currency to another and <strong>fetching</strong> exchange rates from different 
 
 <p><img src="http://floqq.github.com/Rockefeller/" alt="http://floqq.github.com/Rockefeller/"></p>
 
-<h2>Working with currencies</h2>
+<h2>
+<a name="working-with-currencies" class="anchor" href="#working-with-currencies"><span class="octicon octicon-link"></span></a>Working with currencies</h2>
 
 <p>Currencies are represented by the <code>Currency</code> class.</p>
 
@@ -94,7 +96,8 @@ with them.</p>
 which stores the supported currency just in memory. If you need to store them
 in other place see the section <strong>Currency Store</strong>.</p>
 
-<h2>Exchange rates</h2>
+<h2>
+<a name="exchange-rates" class="anchor" href="#exchange-rates"><span class="octicon octicon-link"></span></a>Exchange rates</h2>
 
 <p>Exchange rates between currencies are represented through the <code>ExchangeRate</code>
 class but you can <strong>add</strong> and <strong>retrieve</strong> exchange rates directly like this:</p>
@@ -130,7 +133,8 @@ class but you can <strong>add</strong> and <strong>retrieve</strong> exchange ra
 <code>MemoryExchangeRates</code> which stores the rates just in memory. If you need to
 store them in other place see the section <strong>Exchange Rates Store</strong>.</p>
 
-<h2>Money</h2>
+<h2>
+<a name="money" class="anchor" href="#money"><span class="octicon octicon-link"></span></a>Money</h2>
 
 <p>For working with currencies and amounts of it there's the convenient <code>Money</code>
 class.</p>
@@ -139,44 +143,51 @@ class.</p>
 <span class="n">money</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">100.235</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
 </pre></div>
 
-<h2>Money arithmetic</h2>
+<h2>
+<a name="money-arithmetic" class="anchor" href="#money-arithmetic"><span class="octicon octicon-link"></span></a>Money arithmetic</h2>
 
-<h3>Sum</h3>
+<h3>
+<a name="sum" class="anchor" href="#sum"><span class="octicon octicon-link"></span></a>Sum</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">+</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(200, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h3>Subtraction</h3>
+<h3>
+<a name="subtraction" class="anchor" href="#subtraction"><span class="octicon octicon-link"></span></a>Subtraction</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">-</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(-20, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h3>Subtraction (saturating)</h3>
+<h3>
+<a name="subtraction-saturating" class="anchor" href="#subtraction-saturating"><span class="octicon octicon-link"></span></a>Subtraction (saturating)</h3>
 
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span>
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(0, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h3>Multiplication</h3>
+<h3>
+<a name="multiplication" class="anchor" href="#multiplication"><span class="octicon octicon-link"></span></a>Multiplication</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">*</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(100, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h3>Division</h3>
+<h3>
+<a name="division" class="anchor" href="#division"><span class="octicon octicon-link"></span></a>Division</h3>
 
 <div class="highlight"><pre><span class="p">(</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span> <span class="o">/</span> 
     <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">))</span>
 <span class="c"># =&gt; Money(1, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h3>Float rounding using currency's exponent</h3>
+<h3>
+<a name="float-rounding-using-currencys-exponent" class="anchor" href="#float-rounding-using-currencys-exponent"><span class="octicon octicon-link"></span></a>Float rounding using currency's exponent</h3>
 
 <div class="highlight"><pre><span class="n">usd_money</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">100.235</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
 <span class="n">clp_money</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">60551.984324</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">CLP</span><span class="p">)</span>
@@ -194,19 +205,22 @@ class.</p>
 <span class="c"># = &gt; 60552</span>
 </pre></div>
 
-<h3>String representation</h3>
+<h3>
+<a name="string-representation" class="anchor" href="#string-representation"><span class="octicon octicon-link"></span></a>String representation</h3>
 
 <div class="highlight"><pre><span class="s">u'$100.24'</span> <span class="o">==</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">usd_money</span><span class="p">)</span>
 <span class="c"># =&gt; True</span>
 </pre></div>
 
-<h3>Equality</h3>
+<h3>
+<a name="equality" class="anchor" href="#equality"><span class="octicon octicon-link"></span></a>Equality</h3>
 
 <div class="highlight"><pre><span class="n">usd_money</span> <span class="o">==</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">amount</span><span class="o">=</span><span class="mf">100.235</span><span class="p">,</span> <span class="n">currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>
 <span class="c"># =&gt; True</span>
 </pre></div>
 
-<h3>Conversion between currencies</h3>
+<h3>
+<a name="conversion-between-currencies" class="anchor" href="#conversion-between-currencies"><span class="octicon octicon-link"></span></a>Conversion between currencies</h3>
 
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">rockefeller</span>
 
@@ -222,7 +236,8 @@ class.</p>
 <span class="c"># =&gt; Money(100, rockefeller.Currency.USD)</span>
 </pre></div>
 
-<h3>Conversion between currencies using indirection</h3>
+<h3>
+<a name="conversion-between-currencies-using-indirection" class="anchor" href="#conversion-between-currencies-using-indirection"><span class="octicon octicon-link"></span></a>Conversion between currencies using indirection</h3>
 
 <p>Is common that third-party exchange-rate services gives you the rates of each
 currency relative to a common one.
@@ -298,7 +313,7 @@ currency will be checked, and if set, then this:</p>
 <p>If you don't want to set a currency as the global indirection currency you can
 use a temporarily one like this:</p>
 
-<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">usd</span><span class="p">,</span> <span class="n">indirection_currency</span><span class="o">=</span><span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="n">eur</span><span class="p">)</span><span class="o">.</span><span class="n">exchange_to</span><span class="p">(</span><span class="n">clp</span><span class="p">,</span> <span class="n">indirection_currency</span><span class="o">=</span><span class="n">usd</span><span class="p">)</span>
 <span class="c"># =&gt; Decimal('24177.16', rockefeller.Currency.CLP)</span>
 </pre></div>
 
@@ -308,7 +323,8 @@ by the <code>Money</code> class to convert money from one currency into another,
 try to get (not convert) the exchange rate between two unrelated currencies
 using <code>get_exchange_rate()</code> you will still get <code>None</code>.</p>
 
-<h2>Currency Store</h2>
+<h2>
+<a name="currency-store" class="anchor" href="#currency-store"><span class="octicon octicon-link"></span></a>Currency Store</h2>
 
 <p>By default all supported currencies are stored in memory, so if your program
 finishes or you need the information of those currencies in another place not
@@ -349,7 +365,8 @@ that store like this:</p>
 <span class="n">eur</span><span class="o">.</span><span class="n">support</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">my_store</span><span class="p">)</span>
 </pre></div>
 
-<h2>Exchange Rates Store</h2>
+<h2>
+<a name="exchange-rates-store" class="anchor" href="#exchange-rates-store"><span class="octicon octicon-link"></span></a>Exchange Rates Store</h2>
 
 <p>By default every exchange rate you add between currencies is stored in memory,
 so if your program stops or you need the information of those rates in another
@@ -388,7 +405,8 @@ like this:</p>
 <div class="highlight"><pre><span class="n">rockefeller</span><span class="o">.</span><span class="n">set_exchange_rates_store</span><span class="p">(</span><span class="n">MyExchangeRateStore</span><span class="p">())</span>
 </pre></div>
 
-<h2>Contrib Stores</h2>
+<h2>
+<a name="contrib-stores" class="anchor" href="#contrib-stores"><span class="octicon octicon-link"></span></a>Contrib Stores</h2>
 
 <p>Since this library came out from a Google App Engine(GAE) project we shipped a
 <code>Currency</code> and <code>ExchangeRates</code> stores. Each of these stores are going to
@@ -414,7 +432,8 @@ has the <code>get(code)</code> and <code>support(currency)</code> class methods.
 has the <code>add_exchange_rate(base_currency, currency, exchange_rate)</code> and
 <code>get_exchange_rate(base_currency, currency)</code> class methods.</p>
 
-<h2>Real World Example</h2>
+<h2>
+<a name="real-world-example" class="anchor" href="#real-world-example"><span class="octicon octicon-link"></span></a>Real World Example</h2>
 
 <p>This is real-world example of how we use this library. In our project, we have
 a <code>money.py</code> file that takes care of configuring the lib and initializing the
@@ -439,7 +458,8 @@ supported currencies.</p>
 <span class="n">rockefeller</span><span class="o">.</span><span class="n">Money</span><span class="o">.</span><span class="n">indirection_currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span>
 </pre></div>
 
-<h2>Installation</h2>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
 
 <p>The library has 0 dependencies outside of the standard library. In order to
 install it just download the source and run:</p>
@@ -452,7 +472,8 @@ install it just download the source and run:</p>
 <pre><code>pip install -e git+http://github.com/Floqq/Rockefeller.git#egg=Rockefeller
 </code></pre>
 
-<h2>Running tests</h2>
+<h2>
+<a name="running-tests" class="anchor" href="#running-tests"><span class="octicon octicon-link"></span></a>Running tests</h2>
 
 <pre><code>python setup.py test
 </code></pre>
