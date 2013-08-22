@@ -433,6 +433,68 @@ has the <code>add_exchange_rate(base_currency, currency, exchange_rate)</code> a
 <code>get_exchange_rate(base_currency, currency)</code> class methods.</p>
 
 <h2>
+<a name="exchange-rates-service" class="anchor" href="#exchange-rates-service"><span class="octicon octicon-link"></span></a>Exchange Rates Service</h2>
+
+<p>This library comes with built-in support for openexchangerates service, that is, a service to automatically retrieve the current status of the exchange rates between different currencies.</p>
+
+<p>Here's is simple example of what you have to do in order to be up to date with the exchange rates:</p>
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">http</span>
+
+<span class="kn">import</span> <span class="nn">rockefeller</span>
+<span class="kn">from</span> <span class="nn">rockefeller.services</span> <span class="kn">import</span> <span class="n">OpenExchangeRates</span><span class="p">,</span> <span class="n">ServiceError</span>
+
+
+<span class="k">def</span> <span class="nf">cron_update_exchange_rates</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenExchangeRates</span><span class="p">(</span><span class="n">app_id</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EXCHANGE_RATES_APP_ID</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">exchange_rates</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">latest</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ServiceError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">exchange_rate</span> <span class="ow">in</span> <span class="n">exchange_rates</span><span class="p">:</span>
+            <span class="n">base_currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">exchange_rate</span><span class="o">.</span><span class="n">code_from</span><span class="p">)</span>
+            <span class="n">currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">exchange_rate</span><span class="o">.</span><span class="n">code_to</span><span class="p">)</span>
+            <span class="n">rockefeller</span><span class="o">.</span><span class="n">add_exchange_rate</span><span class="p">(</span><span class="n">base_currency</span><span class="p">,</span> <span class="n">currency</span><span class="p">,</span> <span class="n">exchange_rate</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">HttpResponse</span><span class="p">(</span><span class="s">'Exchange rates updated...'</span><span class="p">)</span>
+</pre></div>
+
+<p>If you're using App Engine, we provide an urlopener that uses App Engine <code>urlfetch</code> service:</p>
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">http</span>
+
+<span class="kn">import</span> <span class="nn">rockefeller</span>
+<span class="kn">from</span> <span class="nn">rockefeller.services</span> <span class="kn">import</span> <span class="n">OpenExchangeRates</span><span class="p">,</span> <span class="n">ServiceError</span>
+<span class="kn">from</span> <span class="nn">rockefeller.openers</span> <span class="kn">import</span> <span class="n">GaeOpener</span>
+
+
+
+<span class="k">def</span> <span class="nf">cron_update_exchange_rates</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+    <span class="n">OpenExchangeRates</span><span class="o">.</span><span class="n">url_opener</span> <span class="o">=</span> <span class="n">GaeOpener</span><span class="p">()</span>
+    <span class="n">service</span> <span class="o">=</span> <span class="n">OpenExchangeRates</span><span class="p">(</span><span class="n">app_id</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">EXCHANGE_RATES_APP_ID</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">exchange_rates</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">latest</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">ServiceError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">exchange_rate</span> <span class="ow">in</span> <span class="n">exchange_rates</span><span class="p">:</span>
+            <span class="n">base_currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">exchange_rate</span><span class="o">.</span><span class="n">code_from</span><span class="p">)</span>
+            <span class="n">currency</span> <span class="o">=</span> <span class="n">rockefeller</span><span class="o">.</span><span class="n">Currency</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">exchange_rate</span><span class="o">.</span><span class="n">code_to</span><span class="p">)</span>
+            <span class="n">rockefeller</span><span class="o">.</span><span class="n">add_exchange_rate</span><span class="p">(</span><span class="n">base_currency</span><span class="p">,</span> <span class="n">currency</span><span class="p">,</span> <span class="n">exchange_rate</span><span class="o">.</span><span class="n">rate</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">http</span><span class="o">.</span><span class="n">HttpResponse</span><span class="p">(</span><span class="s">'Exchange rates updated...'</span><span class="p">)</span>
+</pre></div>
+
+<h2>
 <a name="real-world-example" class="anchor" href="#real-world-example"><span class="octicon octicon-link"></span></a>Real World Example</h2>
 
 <p>This is real-world example of how we use this library. In our project, we have
