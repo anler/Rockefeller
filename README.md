@@ -285,7 +285,7 @@ If you don't want to set a currency as the global indirection currency you can
 use a temporarily one like this:
 
 ``` python
-rockefeller.Money(40, eur).exchange_to(usd, indirection_currency=rockefeller.Currency.USD).exchange_to(clp)
+rockefeller.Money(40, eur).exchange_to(clp, indirection_currency=usd)
 # => Decimal('24177.16', rockefeller.Currency.CLP)
 ```
 
