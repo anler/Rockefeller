@@ -111,6 +111,10 @@ class Money(namedtuple('Money', 'amount currency')):
 
         return rate
 
+    @property
+    def rounded_amount(self):
+        return round_amount(self.amount, self.currency)
+
     def exchange_to(self, currency, indirection_currency=None,
                     exchange_rate=None):
         """Convert this money into money of another currency.
