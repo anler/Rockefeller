@@ -1,8 +1,13 @@
-import urllib
-import urllib2
+# -*- coding: utf-8 -*-
 import json
 
-from .utils import LoggingHandler
+try:
+    from urllib.parse import urlencode
+    from urllib.request import build_opener
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib import urlencode
+    from urllib2 import build_opener, HTTPError
 
 try:
     import requests
@@ -14,17 +19,19 @@ try:
 except ImportError:
     urlfetch = None
 
+from .utils import LoggingHandler
+
 
 class DefaultOpener(object):
-    opener = urllib2.build_opener(LoggingHandler(__name__))
+    opener = build_opener(LoggingHandler(__name__))
 
     def open(self, url, params):
         if not url.endswith('?'):
             url += '?'
-        url += urllib.urlencode(params)
+        url += urlencode(params)
         try:
             response = self.opener.open(url)
-        except urllib2.HTTPError as e:
+        except HTTPError as e:
             response = e
 
         return json.load(response)
@@ -39,7 +46,7 @@ class GaeOpener(object):
     def open(self, url, params):
         if not url.endswith('?'):
             url += '?'
-        url += urllib.urlencode(params)
+        url += urlencode(params)
         response = urlfetch.fetch(url)
 
         return json.load(response.content)

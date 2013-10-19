@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+from __future__ import division
 import decimal
 from collections import namedtuple
+
+from six import PY3
 
 from .exchange_rates import get_exchange_rate
 from .exceptions import ExchangeError, MoneyError
@@ -21,60 +25,81 @@ def round_amount(amount, currency):
     except AttributeError:
         raise MoneyError('Wrong currency `{!r}` for money.'.format(currency))
     exponent = '1.' + '0' * currency.exponent
-
-    return amount.quantize(decimal.Decimal(exponent),
-                           rounding=decimal.ROUND_HALF_UP)
+    return amount.quantize(decimal.Decimal(exponent), rounding=decimal.ROUND_HALF_UP)
 
 
 def to_decimal(value):
+    """Convert a value into a decimal value.
+
+    :param value: Any value that can be casted into a numeric string.
+
+    :return: Decimal value. :class:`~decimal.Decimal` instance.
+    """
     if not isinstance(value, decimal.Decimal):
         value = decimal.Decimal(str(value))
     return value
 
 
+def _check_operand(operation, operand):
+    if not isinstance(operand, Money):
+        msg = "unsupported operand type(s) for %s: 'Money' and '%r'" % (
+            operation, operand.__class__)
+        raise TypeError(msg)
+
+
 class Money(namedtuple('Money', 'amount currency')):
-    """Representation of money. Each object has an amount and a currency.
-    Amount is always converted into a ``decimal``.
+    """Representation of money.
+
+    Every `Money` objects has an amount and a currency associated to it and the amount is always a
+    :class:`~decimal.Decimal` value.
+
+    Initialization params:
+
+        `amount`
+            Amount of money.
+
+        `currency`
+            Money currency. :class:`~rockefeller.currency.Currency` instance.
     """
-    __slots__ = ()
     indirection_currency = None
 
     def __new__(cls, amount, currency):
-        amount = to_decimal(amount)
-        return super(Money, cls).__new__(cls, amount, currency)
-
-    @staticmethod
-    def _check_operand(operation, operand):
-        if not isinstance(operand, Money):
-            msg = "unsupported operand type(s) for %s: 'Money' and '%r'" % (
-                operation, operand.__class__)
-            raise TypeError(msg)
+        return super(Money, cls).__new__(cls, to_decimal(amount), currency)
 
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and
                 self.amount == other.amount and self.currency == other.currency)
 
     def __add__(self, other):
-        Money._check_operand('+', other)
+        _check_operand('+', other)
         return Money(self.amount + other.amount, self.currency)
 
     def __sub__(self, other):
-        Money._check_operand('-', other)
+        _check_operand('-', other)
         return Money(self.amount - other.amount, self.currency)
 
     def __mul__(self, other):
-        Money._check_operand('*', other)
+        _check_operand('*', other)
         return Money(self.amount * other.amount, self.currency)
 
     def __div__(self, other):
-        Money._check_operand('/', other)
+        _check_operand('/', other)
         return Money(self.amount / other.amount, self.currency)
+    __floordiv__ = __div__
+    __truediv__ = __div__
+
+    def __divmod__(self, other):
+        quotient, remainder = divmod(self.amount, other.amount)
+        return Money(quotient, self.currency), Money(remainder, self.currency)
 
     def __float__(self):
         return float(round_amount(self.amount, self.currency))
 
     def __str__(self):
-        return self.__unicode__().encode('utf-8')
+        value = self.__unicode__()
+        if PY3:
+            return value
+        return value.encode('utf-8')
 
     def __unicode__(self):
         amount = self.amount

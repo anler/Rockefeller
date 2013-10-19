@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from rockefeller.utils import LoggingHandler
 
 

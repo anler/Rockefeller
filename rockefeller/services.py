@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from six import iteritems
+
 from .exchange_rates import ExchangeRate
 from .openers import DefaultOpener
 
@@ -24,7 +27,8 @@ class OpenExchangeRates(object):
 
         def __iter__(self):
             base = self.rates['base']
-            for code, rate in self.rates['rates'].iteritems():
+            rates = self.rates['rates']
+            for code, rate in iteritems(rates):
                 yield ExchangeRate(base, code, rate)
 
     api_endpoint = '{protocol}://openexchangerates.org/api/{endpoint}'

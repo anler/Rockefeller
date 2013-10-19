@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .exchange_rates import (ExchangeRate, ExchangeRates, MemoryExchangeRates,
                              exchange_rates, add_exchange_rate,
                              remove_exchange_rate, get_exchange_rate)
@@ -19,4 +20,4 @@ __all__ = ['add_exchange_rate', 'get_exchange_rate', 'Currency', 'Money',
            'set_currency_store', 'set_exchange_rates_store', 'round_amount']
 
 __title__ = 'rockefeller'
-__version__ = '1.1.0'
+__version__ = '1.2.0'

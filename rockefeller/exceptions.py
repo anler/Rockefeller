@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 
 class ExchangeError(Exception):
     """Exception raised when converting between currencies using a not

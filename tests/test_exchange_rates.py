@@ -1,6 +1,5 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 import decimal
-
 import mock
 
 import rockefeller
@@ -19,22 +18,18 @@ def setup_module(module):
 class TestExchangeRates:
     def test_add_exchange_rate(self):
         er = rockefeller.ExchangeRates(store=mock.Mock())
-        er.add_exchange_rate(base_currency=usd, currency=eur,
-                             exchange_rate=1.0)
-
+        er.add_exchange_rate(base_currency=usd, currency=eur, exchange_rate=1.0)
         er.store.add_exchange_rate.assert_called_once_with(usd, eur, '1.0')
 
     def test_remove_exchange_rate(self):
         er = rockefeller.ExchangeRates(store=mock.Mock())
         er.remove_exchange_rate(base_currency=usd, currency=eur)
-
         er.store.remove_exchange_rate.assert_called_once_with(usd, eur)
 
     def test_get_exchange_rate(self):
         er = rockefeller.ExchangeRates(store=mock.Mock())
         er.store.get_exchange_rate.return_value = 1.0
         rate = er.get_exchange_rate(base_currency=usd, currency=eur)
-
         er.store.get_exchange_rate.assert_called_once_with(usd, eur)
         assert rate == 1.0
 
@@ -42,7 +37,6 @@ class TestExchangeRates:
         er = rockefeller.ExchangeRates(store=mock.Mock())
         er.store.get_exchange_rate.return_value = None
         rate = er.get_exchange_rate(base_currency=usd, currency=eur)
-
         assert er.store.get_exchange_rate.call_count == 2
         er.store.get_exchange_rate.assert_called_with(eur, usd)
         assert rate is None

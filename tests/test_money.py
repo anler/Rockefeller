@@ -1,7 +1,8 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 import decimal
 
 import pytest
+from six import PY3
 
 import rockefeller
 
@@ -46,12 +47,25 @@ class TestMoney:
         assert decimal.Decimal('60551.984324') == clp.amount
         assert 60552 == float(clp)
 
+
+    def test_rounded_amount(self):
+        usd = rockefeller.Money(amount=100.100, currency=rockefeller.Currency.USD)
+        assert '100.10' == str(usd.rounded_amount)
+
+    def test_rounded_amount_exponent_0(self):
+        clp = rockefeller.Money(amount=100.100, currency=rockefeller.Currency.CLP)
+        assert '100' == str(clp.rounded_amount)
+
     def test_representation(self):
         usd = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
         eur = rockefeller.Money(amount=78, currency=rockefeller.Currency.EUR)
 
-        assert u'€78' == unicode(eur)
-        assert u'$100' == unicode(usd)
+        if PY3:
+            assert '€78' == str(eur)
+            assert '$100' == str(usd)
+        else:
+            assert u'€78' == unicode(eur)
+            assert u'$100' == unicode(usd)
 
     def test_exchange_to(self):
         usd = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)
@@ -65,7 +79,7 @@ class TestMoney:
         usd = rockefeller.Money(amount=100, currency=rockefeller.Currency.EUR)
 
         with pytest.raises(rockefeller.exceptions.ExchangeError):
-            exchange = usd.exchange_to(rockefeller.Currency.CLP)
+            usd.exchange_to(rockefeller.Currency.CLP)
 
     def test_exchange_indirectional(self):
         rockefeller.Money.indirection_currency = rockefeller.Currency.USD
@@ -149,6 +163,21 @@ class TestMoney:
         usd2 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
 
         assert rockefeller.Money(1, rockefeller.Currency.USD) == usd1 / usd2
+
+    def test_division_floor(self):
+        usd1 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+
+        assert rockefeller.Money(1, rockefeller.Currency.USD) == usd1 // usd2
+
+    def test_division_divmod(self):
+        usd1 = rockefeller.Money(amount=25, currency=rockefeller.Currency.USD)
+        usd2 = rockefeller.Money(amount=10, currency=rockefeller.Currency.USD)
+
+        result = (rockefeller.Money(2, rockefeller.Currency.USD),
+                  rockefeller.Money(5, rockefeller.Currency.USD))
+
+        assert result == divmod(usd1, usd2)
 
     def test_unsupported_division(self):
         usd1 = rockefeller.Money(amount=100, currency=rockefeller.Currency.USD)

@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
 from collections import namedtuple
+
+from six import add_metaclass
 
 
 class MemoryCurrency(object):
@@ -38,6 +41,7 @@ class CurrencyType(type):
         return cls.get(code)
 
 
+@add_metaclass(CurrencyType)
 class Currency(namedtuple('Currency', 'name code numeric exponent symbol')):
     """The currency objects factory.
 
@@ -65,8 +69,6 @@ class Currency(namedtuple('Currency', 'name code numeric exponent symbol')):
             Currency unicode symbol. For currencies without a symbol just use
             empty string ``''``.
     """
-    __metaclass__ = CurrencyType
-    __slots__ = ()
     store = MemoryCurrency()
 
     def __str__(self):

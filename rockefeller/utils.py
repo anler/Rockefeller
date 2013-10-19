@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
 import logging
-import urllib2
+try:
+    from urllib.request import BaseHandler
+except ImportError:
+    from urllib2 import BaseHandler
 
 
-class LoggingHandler(urllib2.BaseHandler):
+class LoggingHandler(BaseHandler):
     def __init__(self, name=None, level=None):
         if name is None:
             name = __name__

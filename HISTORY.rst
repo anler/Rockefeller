@@ -3,6 +3,14 @@
 History
 -------
 
+1.2.0 (Sun 20 Oct 2013 01:01:25 AM CEST)
+++++++++++++++++++++++++++++++++++++++++
+
+- Python 3.3 compatibility
+- Continuous integration with Tox
+- Money object support for divmod built-in function
+- New money property: rounded_amount and rockefeller.round_amount function
+
 1.1.0 (Fri Apr 12 16:26:02 CEST 2013)
 +++++++++++++++++++++++++++++++++++++
 
