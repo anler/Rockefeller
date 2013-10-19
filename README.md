@@ -6,6 +6,7 @@ tools for __storing__ currencies and exchange rates, __converting__ from one
 currency to another and __fetching__ exchange rates from different services.
 
 ![travis](https://api.travis-ci.org/Floqq/Rockefeller.png?branch=master)
+
 ![pypi](https://pypip.in/d/Rockefeller/badge.png)
 
 Working with currencies
