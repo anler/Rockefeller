@@ -35,7 +35,7 @@ setup(name="Rockefeller",
       author_email="anler86@gmail.com",
       url="http://floqq.github.com/Rockefeller/",
       license="MIT",
-      tests_require=["pytest"],
+      tests_require=["pytest", "mock"],
       cmdclass={"test": PyTest},
       keywords="money currency exchange rates",
       classifiers=[
@@ -48,4 +48,3 @@ setup(name="Rockefeller",
           "Programming Language :: Python :: 2.7",
           "Topic :: Software Development :: Libraries :: Python Modules",
           "Topic :: Office/Business :: Financial"])
-
