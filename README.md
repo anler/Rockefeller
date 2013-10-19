@@ -5,9 +5,6 @@ Library for dealing with money and currency conversion in Python. It provides
 tools for __storing__ currencies and exchange rates, __converting__ from one
 currency to another and __fetching__ exchange rates from different services.
 
-![http://floqq.github.com/Rockefeller/](http://floqq.github.com/Rockefeller/)
-
-
 Working with currencies
 -----------------------
 
@@ -116,7 +113,7 @@ Money arithmetic
 ### Sum
 
 ``` python
-(rockefeller.Money(100, rockefeller.Currency.USD) + 
+(rockefeller.Money(100, rockefeller.Currency.USD) +
     rockefeller.Money(100, rockefeller.Currency.USD))
 # => Money(200, rockefeller.Currency.USD)
 ```
@@ -124,7 +121,7 @@ Money arithmetic
 ### Subtraction
 
 ``` python
-(rockefeller.Money(80, rockefeller.Currency.USD) - 
+(rockefeller.Money(80, rockefeller.Currency.USD) -
     rockefeller.Money(100, rockefeller.Currency.USD))
 # => Money(-20, rockefeller.Currency.USD)
 ```
@@ -140,17 +137,37 @@ rockefeller.Money(80, rockefeller.Currency.USD).remove(
 ### Multiplication
 
 ``` python
-(rockefeller.Money(10, rockefeller.Currency.USD) * 
+(rockefeller.Money(10, rockefeller.Currency.USD) *
     rockefeller.Money(10, rockefeller.Currency.USD))
 # => Money(100, rockefeller.Currency.USD)
 ```
 
-### Division
+### Division and Floor Division
 
 ``` python
-(rockefeller.Money(100, rockefeller.Currency.USD) / 
+(rockefeller.Money(100, rockefeller.Currency.USD) /
     rockefeller.Money(100, rockefeller.Currency.USD))
 # => Money(1, rockefeller.Currency.USD)
+
+(rockefeller.Money(100, rockefeller.Currency.USD) //
+    rockefeller.Money(100, rockefeller.Currency.USD))
+# => Money(1, rockefeller.Currency.USD)
+```
+
+### Division and Remainder (divmod)
+
+``` python
+divmod(rockefeller.Money(25, rockefeller.Currency.USD),
+       rockefeller.Money(10, rockefeller.Currency.USD))
+# => Money(2, rockefeller.Currency.USD), Money(5, rockefeller.Currency.UDS)
+```
+
+### Rounding
+
+``` python
+usd = rockefeller.Money(25.1000, rockefeller.Currency.USD)
+usd.rounded_amount
+# => decimal.Decimal('25.10')
 ```
 
 ### Float rounding using currency's exponent
@@ -440,7 +457,7 @@ def cron_update_exchange_rates(req):
             base_currency = rockefeller.Currency.get(exchange_rate.code_from)
             currency = rockefeller.Currency.get(exchange_rate.code_to)
             rockefeller.add_exchange_rate(base_currency, currency, exchange_rate.rate)
-            
+
     return http.HttpResponse('Exchange rates updated...')
 ```
 
@@ -471,7 +488,7 @@ def cron_update_exchange_rates(req):
             base_currency = rockefeller.Currency.get(exchange_rate.code_from)
             currency = rockefeller.Currency.get(exchange_rate.code_to)
             rockefeller.add_exchange_rate(base_currency, currency, exchange_rate.rate)
-            
+
     return http.HttpResponse('Exchange rates updated...')
 ```
 
