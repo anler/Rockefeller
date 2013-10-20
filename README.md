@@ -5,9 +5,11 @@ Library for dealing with money and currency conversion in Python. It provides
 tools for __storing__ currencies and exchange rates, __converting__ from one
 currency to another and __fetching__ exchange rates from different services.
 
-![travis](https://api.travis-ci.org/Floqq/Rockefeller.png?branch=master)
+[![travis](https://travis-ci.org/Floqq/Rockefeller.png?branch=master)](https://travis-ci.org/Floqq/Rockefeller)
 
-![pypi](https://pypip.in/d/Rockefeller/badge.png)
+[![pypi](https://pypip.in/v/Rockefeller/badge.png)](https://pypip.in/v/Rockefeller/badge.png)
+
+[![crate.io](https://pypip.in/d/Rockefeller/badge.png)](https://crate.io/packages/Rockefeller)
 
 Working with currencies
 -----------------------
