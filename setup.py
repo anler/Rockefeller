@@ -44,6 +44,7 @@ setup(name="Rockefeller",
           "Intended Audience :: Developers",
           "Intended Audience :: Financial and Insurance Industry",
           "Operating System :: OS Independent",
-          "Programming Language :: Python :: 2.7 :: 3.3",
+          "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3.3",
           "Topic :: Software Development :: Libraries :: Python Modules",
           "Topic :: Office/Business :: Financial"])
