@@ -12,7 +12,7 @@ try:
     README = open(os.path.join(here, "README.rst")).read()
     README += open(os.path.join(here, "HISTORY.rst")).read()
 except IOError:
-    README = "http://floqq.github.com/Rockefeller"
+    README = "http://ikame.github.com/Rockefeller"
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -26,12 +26,12 @@ class PyTest(TestCommand):
 
 
 setup(name="Rockefeller",
-      version="1.2.1",
+      version="1.2.2",
       description="Money, currencies and exchange rates library.",
       long_description=README,
       author="ikame",
       author_email="anler86@gmail.com",
-      url="http://floqq.github.com/Rockefeller/",
+      url="http://ikame.github.com/Rockefeller/",
       license="MIT",
       install_requires=["six"],
       tests_require=["pytest", "mock"],
