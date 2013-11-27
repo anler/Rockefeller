@@ -26,8 +26,8 @@ Or, directly from the main repository:
 
 .. code-block:: bash
 
-    $ pip install -e git+http://github.com/Floqq/Rockefeller.git#egg=Rockefeller
+    $ pip install -e git+http://github.com/ikame/Rockefeller.git#egg=Rockefeller
 
 See `project's website`_ for more information.
 
-.. _project's website: http://floqq.github.com/Rockefeller
+.. _project's website: http://ikame.github.io/Rockefeller
