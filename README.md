@@ -536,7 +536,7 @@ install it just download the source and run:
 
 Or you can install it directly from git using pip:
 
-    pip install -e git+http://github.com/Floqq/Rockefeller.git#egg=Rockefeller
+    pip install -e git+http://github.com/ikame/Rockefeller.git#egg=Rockefeller
 
 Running tests
 -------------
