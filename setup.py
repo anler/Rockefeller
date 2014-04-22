@@ -1,7 +1,7 @@
 import os
 import sys
 
-from setuptools import setup
+from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 
 py_version = sys.version_info[:2]
@@ -13,6 +13,12 @@ try:
     README += open(os.path.join(here, "HISTORY.rst")).read()
 except IOError:
     README = "http://ikame.github.com/Rockefeller"
+
+try:
+    VERSION = open("VERSION").read()
+except IOError:
+    VERSION = "1.0"
+
 
 class PyTest(TestCommand):
     def finalize_options(self):
@@ -26,13 +32,14 @@ class PyTest(TestCommand):
 
 
 setup(name="Rockefeller",
-      version="1.2.2",
+      version=VERSION,
       description="Money, currencies and exchange rates library.",
       long_description=README,
       author="ikame",
       author_email="anler86@gmail.com",
       url="http://ikame.github.com/Rockefeller/",
       license="MIT",
+      packages=find_packages(exclude=("tests",)),
       install_requires=["six"],
       tests_require=["pytest", "mock"],
       cmdclass={"test": PyTest},
