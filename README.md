@@ -5,7 +5,7 @@ Library for dealing with money and currency conversion in Python. It provides
 tools for __storing__ currencies and exchange rates, __converting__ from one
 currency to another and __fetching__ exchange rates from different services.
 
-[![travis](https://travis-ci.org/ikame/Rockefeller.png?branch=master)](https://travis-ci.org/ikame/Rockefeller)
+[![travis](https://travis-ci.org/anler/Rockefeller.png?branch=master)](https://travis-ci.org/ikame/Rockefeller)
 
 [![pypi](https://pypip.in/v/Rockefeller/badge.png)](https://pypip.in/v/Rockefeller/badge.png)
 
@@ -536,7 +536,7 @@ install it just download the source and run:
 
 Or you can install it directly from git using pip:
 
-    pip install -e git+http://github.com/ikame/Rockefeller.git#egg=Rockefeller
+    pip install -e git+http://github.com/anler/Rockefeller.git#egg=Rockefeller
 
 Running tests
 -------------
